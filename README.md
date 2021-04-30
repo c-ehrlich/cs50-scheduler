@@ -15,4 +15,4 @@ Final project for Harvard University CS50. Web app that lets users create events
 ## Learning Outcomes
 * Strengthened my understanding of building web apps using Python and Flask
 * MVC
-* Normal Forms in relational databases (3NF)
+* Normal Forms in relational databases (up to 4NF)
