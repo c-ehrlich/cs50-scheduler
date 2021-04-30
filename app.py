@@ -73,4 +73,20 @@ def register():
     # User reached route via POST
     # ie by filling out the form on /register.html and pressing submit
     if request.method == "POST":
+
+        # Get data from form
+        name = request.form.get("name")
+        email = request.form.get("email")
+        pw_hash = generate_password_hash(request.form.get("password"))
+        pw_conf = generate_password_hash(request.form.get("confirmation"))
+
+        # Ensure all fields were filled out
+        if not name or not email or not pw_hash or not pw_conf:
+            return apology("Please fill out all the fields")
+
+        # Ensure the passwords match
+        if not pw_hash == pw_conf:
+            return apology("Please make sure your passwords match")
+        
+
         return apology("TODO")
