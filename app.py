@@ -40,19 +40,37 @@ def index():
     return render_template("index.html")
 
 
+# /login
+# Log in to the website
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    # forget any user_id
+    session.clear()
+
+    # User reached route via GET
+    # For example by clicking a link or via redirect
     if request.method == "GET":
         return render_template("login.html")
 
+    # User reached route via POST
+    # ie by filling otu the form on /login.html and pressing submit
     if request.method == "POST":
         return apology("TODO")
 
 
+# /register
+# Register a new account
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    # forget any user_id
+    session.clear()
+
+    # User reached route via GET
+    # For example by clicking a link or via redirect
     if request.method == "GET":
         return render_template("register.html")
 
+    # User reached route via POST
+    # ie by filling out the form on /register.html and pressing submit
     if request.method == "POST":
         return apology("TODO")
