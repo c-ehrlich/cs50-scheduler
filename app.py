@@ -72,7 +72,21 @@ def login():
         if not check_password_hash(pw, request.form.get("password")):
             return apology("invalid password")
 
-        return apology("login successful but haven't built the site yet lol")
+        # Create user_id to remember which user is logged in
+        session["user_id"] = rows[0]["id"]
+
+        return redirect("/")
+
+
+# /logout
+# log the user out
+@app.route("/logout")
+def logout():
+    # forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
 
 
 # /register
