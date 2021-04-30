@@ -85,9 +85,15 @@ def register():
             return apology("Please fill out all the fields")
 
         # Ensure the passwords match
-        if not pw_hash == pw_conf:
+        if not check_password_hash(pw_hash, request.form.get("confirmation")):
             return apology("Please make sure your passwords match")
-        
 
-        return apology("TODO")
+        # Ensure the email doesn't already exist
+        if len(db.execute("SELECT * FROM users WHERE email = ?", email)) > 0:
+            return apology("There is already an account with this email address!")
+
+        # Once all checks have been passed, create the account
+        db.execute("INSERT INTO users (name, hash, email) VALUES (?, ?, ?)", name, pw_hash, email)
         
+        # Return to the login page
+        return render_template("login.html")
