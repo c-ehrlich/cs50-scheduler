@@ -55,7 +55,24 @@ def login():
     # User reached route via POST
     # ie by filling otu the form on /login.html and pressing submit
     if request.method == "POST":
-        return apology("TODO")
+        
+        email = request.form.get("email")
+        rows = db.execute("SELECT * FROM users WHERE email = ?", email)
+
+        # Ensure that all fields were filled out
+        if not email or not request.form.get("password"):
+            return apology("Please fill out all of the fields")
+
+        # Ensure the account exists
+        if len(rows) == 0:
+            return apology("Couldn't find an account with this email")
+
+        # Check the password
+        pw = rows[0]['hash']
+        if not check_password_hash(pw, request.form.get("password")):
+            return apology("invalid password")
+
+        return apology("login successful but haven't built the site yet lol")
 
 
 # /register
