@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create Event
+{% endblock %}
+
+{% block main %}
+    <form action="/create" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Event Name" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="description" placeholder="Event Description" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="date" placeholder="" type="date">
+        </div>
+        <input type="number" name="num_slots" min="1" max="50">
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+{% endblock %}

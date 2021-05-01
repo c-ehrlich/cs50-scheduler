@@ -1,4 +1,6 @@
 import os
+import string
+import random
 from datetime import datetime
 
 from cs50 import SQL
@@ -40,10 +42,70 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/create")
+# /create
+# Create a new event
+@app.route("/create", methods=["GET", "POST"])
 @login_required
-    def create():
-        return apology("WIP")
+def create():
+    # User reached route via GET
+    # Usually by clicking on it in the header
+    if request.method == "GET":
+        return render_template("create.html")
+
+    # User reached route via POST
+    # Usually by filling out details for a new event and clicking submit
+    if request.method == "POST":
+        # Get data from form
+        name = request.form.get("name")
+        description = request.form.get("description")
+        date = request.form.get("date")
+        slots = request.form.get("num_slots")
+
+        # Create UUID
+        # This is a unique 8-digit (A-Z) ID to identify each event
+        # Used for email referral links, search, etc
+        uid = ""
+
+        while uid == "":
+            # Create a random 8-character string
+            uid = "".join(random.choice(string.ascii_uppercase) for _ in range(8))
+
+            # See if an event with that ID already exists
+            if db.execute("SELECT * FROM events WHERE hash = ?", uid):
+                uid = "";
+                print("Seems like there's already an event with this ID")
+    
+        # add the new event to the events table
+        db.execute("INSERT INTO events (name, description, date, owner_id, hash) VALUES (?, ?, ?, ?, ?)",
+		           name, description, data, session.get("user_id"), uid)
+                   
+        # get the event id
+        event_id = db.execute("SELECT * FROM events WHERE hash = ?", uid)[0]['id']
+
+        # create slots for the event
+        for i in range(slots):
+            db.execute("INSERT INTO slots (time_start, time_end, event_id, user_id VALUES (?, ?, ?, ?",
+                       0, 0, event_id, 0)
+
+        # create slots dict, mostly for passing to the next function
+        slots = db.execute("SELECT * FROM slots WHERE event_id = ?", event_id)
+
+        return render_tempate("create_slots.html", slots=slots)
+
+
+# /create_slots
+# determine the start and end times of each slot for an event
+@app.route("/create_slots", methods=["GET", "POST"])
+def create_slots():
+    # user reached route via GET
+    # either through the event creation process, or by requesting to edit the event
+    if request.method == "GET":
+        return render_template("create_slots.html", slots=slots)
+
+    # User reached route via POST
+    # This happens when the user submits start and end times for slots
+    if request.method == "POST":
+        return apology("TODO")
 
 
 # /login

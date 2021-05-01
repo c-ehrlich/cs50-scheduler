@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Time Slots
+{% endblock %}
+
+{% block main %}
+    {% for slot in slots %}
+        <label for="slot{{ slot }}_start">Slot {{ slot }} Start Time</label>
+        <input type="time" name="slot{{ slot }}_start">
+        <label for="slot{{ slot }}_start">Slot {{ slot }} End Time</label>
+        <input type="time" name="slot{{ slot }}_end">
+        <hr>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    {% endfor %}
+{% endblock %}
