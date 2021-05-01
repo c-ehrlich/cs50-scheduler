@@ -40,6 +40,12 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/create")
+@login_required
+    def create():
+        return apology("WIP")
+
+
 # /login
 # Log in to the website
 @app.route("/login", methods=["GET", "POST"])
