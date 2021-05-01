@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Join Meeting
+{% endblock %}
+
+{% block main %}
+    <form action="/join" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="hash_id" placeholder="Meeting ID" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Join</button>
+    </form>
+{% endblock %}

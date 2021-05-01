@@ -103,6 +103,7 @@ def create():
 # /create_slots
 # determine the start and end times of each slot for an event
 @app.route("/create_slots", methods=["GET", "POST"])
+@login_required
 def create_slots():
     # user reached route via GET
     # either through the event creation process, or by requesting to edit the event
@@ -112,6 +113,53 @@ def create_slots():
     # User reached route via POST
     # This happens when the user submits start and end times for slots
     if request.method == "POST":
+        return apology("TODO")
+
+
+# /created
+# shows all meetings created by the active user
+@app.route("/created")
+@login_required
+def created():
+    if request.method == "GET":
+        meetings = db.execute("SELECT events.id, events.hash, events.date FROM events " +
+                              "JOIN users ON events.owner_id = users.id " +
+                              "WHERE users.id = ?",
+                              session.get("user_id"))
+        return render_template("created.html", meetings=meetings)
+
+    else:
+        return apology("No PUSH route exists yet for /created")
+
+
+# /join
+# prompts the user for a meeting hash, then redirects to join the meeting with that hash
+@app.route("/join", methods=["GET", "POST"])
+@login_required
+def join_id():
+
+    if request.method == "GET":
+        return render_template("join.html")
+
+    if request.method == "POST":
+        hash_id = request.form.get("hash_id")
+        return redirect(f"join/{hash_id}")
+
+
+# /join/hash
+# Join a meeting with the selected hash (give a form to select a time slot)
+# If no hash is provided, display a field to enter a form
+@app.route("/join/<hash>", methods=["GET", "POST"])
+@login_required
+def join(hash):
+
+    # User reached route via GA
+    if request.method == "GET":
+        if not db.execute("SELECT * FROM events WHERE hash = ?", hash):
+            return apology("There is no event with this hash")
+        return apology("Found your event, but TODO")
+    
+    if request.mehod == "POST":
         return apology("TODO")
 
 

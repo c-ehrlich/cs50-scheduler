@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Joined Meetings
+{% endblock %}
+
+{% block main %}
+    {% for meeting in meetings %}
+        {{ meeting }}
+    {% endfor %}
+{% endblock %}
