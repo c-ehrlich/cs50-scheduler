@@ -35,6 +35,13 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///scheduler.db")
 
+# (!) SHOULD ATTEMPT TO DO THIS IN A BETTER WAY (BY SETTING THINGS TO NULL INSTEAD OF 0)
+# If there is no user with id=0, then create one
+# This is the user that slots.user_id is initialized to when making slots
+# Because I can't figure out how to send NULL to sql
+# (!) SHOULD ATTEMPT TO DO THIS IN A BETTER WAY (BY SETTING THINGS TO NULL INSTEAD OF 0)
+if not db.execute("SELECT * FROM users WHERE id=0"):
+    db.execute("INSERT INTO users (id, name, hash, email, is_moderator) VALUES (0, '0', '0', '0', 0)")
 
 @app.route("/")
 @login_required
@@ -59,7 +66,7 @@ def create():
         name = request.form.get("name")
         description = request.form.get("description")
         date = request.form.get("date")
-        slots = request.form.get("num_slots")
+        slots = int(request.form.get("num_slots"))
 
         # Create UUID
         # This is a unique 8-digit (A-Z) ID to identify each event
@@ -77,20 +84,20 @@ def create():
     
         # add the new event to the events table
         db.execute("INSERT INTO events (name, description, date, owner_id, hash) VALUES (?, ?, ?, ?, ?)",
-		           name, description, data, session.get("user_id"), uid)
+		           name, description, date, session.get("user_id"), uid)
                    
         # get the event id
         event_id = db.execute("SELECT * FROM events WHERE hash = ?", uid)[0]['id']
 
         # create slots for the event
         for i in range(slots):
-            db.execute("INSERT INTO slots (time_start, time_end, event_id, user_id VALUES (?, ?, ?, ?",
+            db.execute("INSERT INTO slots (time_start, time_end, event_id, user_id) VALUES (?, ?, ?, ?)",
                        0, 0, event_id, 0)
 
         # create slots dict, mostly for passing to the next function
         slots = db.execute("SELECT * FROM slots WHERE event_id = ?", event_id)
 
-        return render_tempate("create_slots.html", slots=slots)
+        return render_template("create_slots.html", slots=slots)
 
 
 # /create_slots
