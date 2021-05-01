@@ -113,6 +113,8 @@ def create_slots():
     # User reached route via POST
     # This happens when the user submits start and end times for slots
     if request.method == "POST":
+        f = request.form
+        print(f)
         return apology("TODO")
 
 
@@ -159,8 +161,25 @@ def join(hash):
             return apology("There is no event with this hash")
         return apology("Found your event, but TODO")
     
-    if request.mehod == "POST":
+    if request.method == "POST":
         return apology("TODO")
+
+
+# /joined
+# shows all meetings joined by the active user
+@app.route("/joined")
+@login_required
+def joined():
+    if request.method == "GET":
+        meetings = db.execute("SELECT events.id, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
+                              "JOIN slots ON events.id = slots.event_id " +
+                              "JOIN users ON slots.user_id = users.id " +
+                              "WHERE users.id = ?",
+                              session.get("user_id"))
+        return render_template("joined.html", meetings=meetings)
+
+    else:
+        return apology("No PUSH route exists yet for /joined")
 
 
 # /login

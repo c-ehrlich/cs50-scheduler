@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block main %}
-    {% for slot in slots %}
-        <label for="slot{{ slot }}_start">Slot {{ slot }} Start Time</label>
-        <input type="time" name="slot{{ slot }}_start">
-        <label for="slot{{ slot }}_start">Slot {{ slot }} End Time</label>
-        <input type="time" name="slot{{ slot }}_end">
-        <hr>
-    {% endfor %}
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <form action="/create_slots" method="post">
+        {% for slot in slots %}
+            <label for="slot{{ slot.id }}_start">Slot {{ loop.index }} Start Time</label>
+            <input type="time" name="slot{{ slot.id }}_start">
+            <label for="slot{{ slot.id }}_end">Slot {{ loop.index }} End Time</label>
+            <input type="time" name="slot{{ slot.id }}_end">
+            <hr>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
 {% endblock %}
