@@ -146,17 +146,21 @@ def create_slots():
 @login_required
 def created():
     if request.method == "GET":
+        # Get list of meetings created by the active user
         meetings = db.execute("SELECT events.id, events.eventname, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
                               "WHERE users.id = ?",
                               session.get("user_id"))
+        
+        # Add information about free, full, and total slots to the meeting dictionary
         for meeting in meetings:
             meeting['slots_total'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ?", 
                                                 meeting['id'])[0]['COUNT(*)']
             meeting['slots_empty'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ? AND user_id = 0",
                                                 meeting['id'])[0]['COUNT(*)']            
             meeting['slots_full'] = meeting['slots_total'] - meeting['slots_empty']
-            print(meeting)
+
+        # Show the selected meetings
         return render_template("created.html", meetings=meetings)
 
     else:
