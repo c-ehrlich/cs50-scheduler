@@ -45,3 +45,12 @@ table
     width: 100%;
     padding: 50px;
 }
+
+.event-main
+{
+    max-width: 600px;
+    background-color: #dddddd;
+    border: 1px solid #444444;
+    padding: 8px;
+    margin-bottom: 8px;
+}
