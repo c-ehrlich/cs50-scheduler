@@ -204,7 +204,7 @@ def join(hash):
 @login_required
 def joined():
     if request.method == "GET":
-        meetings = db.execute("SELECT events.id, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
+        meetings = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
                               "JOIN slots ON events.id = slots.event_id " +
                               "JOIN users ON slots.user_id = users.id " +
                               "WHERE users.id = ?",

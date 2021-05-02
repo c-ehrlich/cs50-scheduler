@@ -6,6 +6,12 @@
 
 {% block main %}
     {% for meeting in meetings %}
-        {{ meeting }}
+        <div class="event-main">
+            <p>{{ meeting.hash }}</p>
+            <p>{{ meeting.eventname }}</p>
+            <p>{{ meeting.date }}</p>
+            <p>{{ meeting.description }}</p>
+            <p>{{ meeting.time_start }} - {{ meeting.time_end }}</p>
+        </div>
     {% endfor %}
 {% endblock %}
