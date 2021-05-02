@@ -5,5 +5,11 @@
 {% endblock %}
 
 {% block main %}
+    <h3>Event</h3>
     {{ event }}
+    <h3>Slots</h3>
+    {% for slot in slots %}
+        {{ slot }}
+        <hr>
+    {% endfor %}
 {% endblock %}
