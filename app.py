@@ -41,7 +41,7 @@ db = SQL("sqlite:///scheduler.db")
 # Because I can't figure out how to send NULL to sql
 # (!) SHOULD ATTEMPT TO DO THIS IN A BETTER WAY (BY SETTING THINGS TO NULL INSTEAD OF 0)
 if not db.execute("SELECT * FROM users WHERE id=0"):
-    db.execute("INSERT INTO users (id, name, hash, email, is_moderator) VALUES (0, '0', '0', '0', 0)")
+    db.execute("INSERT INTO users (id, username, hash, email, is_moderator) VALUES (0, '0', '0', '0', 0)")
 
 @app.route("/")
 @login_required
@@ -83,7 +83,7 @@ def create():
                 print("Seems like there's already an event with this ID")
     
         # add the new event to the events table
-        db.execute("INSERT INTO events (name, description, date, owner_id, hash) VALUES (?, ?, ?, ?, ?)",
+        db.execute("INSERT INTO events (eventname, description, date, owner_id, hash) VALUES (?, ?, ?, ?, ?)",
 		           name, description, date, session.get("user_id"), uid)
                    
         # get the event id
@@ -288,7 +288,7 @@ def register():
             return apology("There is already an account with this email address!")
 
         # Once all checks have been passed, create the account
-        db.execute("INSERT INTO users (name, hash, email) VALUES (?, ?, ?)", name, pw_hash, email)
+        db.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", name, pw_hash, email)
         
         # Return to the login page
         return render_template("login.html")
@@ -301,13 +301,13 @@ def register():
 @app.route("/view/<event_id>")
 @login_required
 def view(event_id):
-    event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)
+    event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)[0]
     slots = db.execute("SELECT * FROM slots " +
                        "JOIN events ON events.id = slots.event_id " +
                        "WHERE events.hash = ?", 
                        event_id)
-    owner = db.execute("SELECT name FROM users " +
-                       "JOIN events ON events.owner_id = users.id" +
-                       "WHERE events.hash = ?",
-                       event_id)[0]['name']
+    owner = db.execute("SELECT * FROM users " +
+                       "JOIN events ON events.owner_id = users.id " +
+                       "WHERE events.hash = ?", 
+                       event_id)[0]['username']
     return render_template("view.html", event=event, slots=slots, owner=owner)

@@ -7,16 +7,27 @@
 {% block main %}
     <h3>Event</h3>
         {{ event }}
-        {{ event.name }}
-        {{ owner }}
-        <h3>{{ event.date }}</h3>
-        <h3>{{ event.owner_id }}</h3>
+        <hr>
+        ID: {{ event.hash }}
+        <hr>
+        {{ event.eventname }}
+        <hr>
+        Description: {{ event.description }}
+        <hr>
+        Schduled for: {{ event.date }}
+        <hr>
+        Scheduled by {{ owner }}
     <h3>Slots</h3>
     {% for slot in slots %}
         <div id="event-slot">
             <p id="slot-time">{{ slot.time_start }} - {{ slot.time_end }}</p>
-            <p id="slot-attendee">{{ slot.user_id }}</p>
+            {% if slot.user_id == 0 %}
+                <p id="slot-attendee">This slot is vacant!</p>
+            {% else %}
+                <p id="slot-attendee">{{ slot.user_id }}</p>
+            {% endif %}
+            <!-- <p id="slot-attendee">{{ slot.user_id }}</p> -->
         </div>
-        {{ slot }}
+        <!-- {{ slot }} -->
     {% endfor %}
 {% endblock %}
