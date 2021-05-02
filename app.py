@@ -147,7 +147,7 @@ def create_slots():
 def created():
     if request.method == "GET":
         # Get list of meetings created by the active user
-        meetings = db.execute("SELECT events.id, events.eventname, events.hash, events.date FROM events " +
+        meetings = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
                               "WHERE users.id = ?",
                               session.get("user_id"))
