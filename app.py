@@ -112,9 +112,7 @@ def create_slots():
 
     # User reached route via POST
     # This happens when the user submits start and end times for slots
-    if request.method == "POST":
-        print(f"TKTK - {event_id} - CURRENTLY IN create_slots/POST")
-        
+    if request.method == "POST":        
         # Create a dictionary with all the slots that were created
         # Example formatting:
         # {'70.start': '09:00', '70.end': '10:00', '71.start': '10:00', '71.end': '11:00'}
@@ -132,8 +130,14 @@ def create_slots():
             if start_end == "end":
                 db.execute("UPDATE slots SET time_end = ? WHERE id = ?", value, index)
 
+        # get the event hash to pass to the view function
+        # oh god this is such a dirty hack
+        slot_id = int(list(slots.keys())[0].split(".")[0])
+        event_id = db.execute("SELECT event_id FROM slots WHERE id = ?", slot_id)[0]['event_id']
+        event_hash = db.execute("SELECT hash FROM events WHERE id = ?", event_id)[0]['hash']
+
         # TKTK TODO maybe end by showing a nice layout of the event with slot start and end times?
-        return render_template("view.html")
+        return redirect(f"view/{event_hash}")
 
 
 # /created
@@ -300,7 +304,7 @@ def view(event_id):
     event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)
     slots = db.execute("SELECT * FROM slots " +
                        "JOIN events ON events.id = slots.event_id " +
-                       "JOIN users ON events.user_id = users.id" +
+                       #"JOIN users ON events.user_id = users.id" +
                        "WHERE events.hash = ?", 
                        event_id)
     return render_template("view.html", event=event, slots=slots)
