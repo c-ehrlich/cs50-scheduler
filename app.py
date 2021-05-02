@@ -298,5 +298,9 @@ def register():
 @login_required
 def view(event_id):
     event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)
-    slots = db.execute("SELECT * FROM slots JOIN events ON events.id = slots.event_id WHERE events.hash = ?", event_id)
+    slots = db.execute("SELECT * FROM slots " +
+                       "JOIN events ON events.id = slots.event_id " +
+                       "JOIN users ON events.user_id = users.id" +
+                       "WHERE events.hash = ?", 
+                       event_id)
     return render_template("view.html", event=event, slots=slots)
