@@ -113,9 +113,27 @@ def create_slots():
     # User reached route via POST
     # This happens when the user submits start and end times for slots
     if request.method == "POST":
-        f = request.form
-        print(f)
-        return apology("TODO")
+        print(f"TKTK - {event_id} - CURRENTLY IN create_slots/POST")
+        
+        # Create a dictionary with all the slots that were created
+        # Example formatting:
+        # {'70.start': '09:00', '70.end': '10:00', '71.start': '10:00', '71.end': '11:00'}
+        slots = dict(request.form)
+
+        for key, value in slots.items():
+            # Split each dictionary entry into data that we can use
+            temp = key.split(".")
+            index = int(temp[0])
+            start_end = temp[1]
+            
+            # Update the slot start and end times in the database
+            if start_end == "start":
+                db.execute("UPDATE slots SET time_start = ? WHERE id = ?", value, index)
+            if start_end == "end":
+                db.execute("UPDATE slots SET time_end = ? WHERE id = ?", value, index)
+
+        # TKTK TODO maybe end by showing a nice layout of the event with slot start and end times?
+        return render_template("view.html")
 
 
 # /created
@@ -270,3 +288,14 @@ def register():
         
         # Return to the login page
         return render_template("login.html")
+
+
+# /view/event_id
+# Views an event with a certain ID
+# Views it as a creator if user is the creator
+# Views it as a participant / potential participant if the user is not the creator
+@app.route("/view/<event_id>")
+@login_required
+def view(event_id):
+    event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)
+    return render_template("view.html", event=event)
