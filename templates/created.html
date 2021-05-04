@@ -13,10 +13,10 @@
             <p>{{ meeting.description }}</p>
             <p>{{ meeting.slots_full }} / {{ meeting.slots_total }} slots filled</p>
             <form action="/view/{{ meeting.hash }}" method="get">
-                <input type=submit value="View & Edit">
+                <input type=submit value="View">
             </form>
             <form>
-                <input type=button value="Delete (TODO)">
+                <input type=button value="Delete">
             </form>
         </div>
     {% endfor %}
