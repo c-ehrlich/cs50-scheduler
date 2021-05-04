@@ -1,7 +1,7 @@
 import os
 import string
 import random
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -52,14 +52,21 @@ if not db.execute("SELECT * FROM users WHERE id=0"):
 def index():
     user = session.get("user_id")
 
+    # decide how many days of future events to display on the front page
+    days_to_display = 14
+
+    # create variables for today and the last day of events to display on the front page
+    today = date.today()
+    soon = today + timedelta(days = days_to_display)
+
     events = db.execute("SELECT events.id, events.owner_id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end " +
                         "FROM events " +
                         "JOIN slots ON events.id = slots.event_id " +
                         "JOIN users ON slots.user_id = users.id " +
-                        "WHERE users.id = ? " +
-                        "OR events.owner_id = ? " +
+                        "WHERE (users.id = ? OR events.owner_id = ?) " +
+                        "AND events.date >= ? AND events.date < ?"
                         "GROUP BY events.id ",
-                        user, user)
+                        user, user, today, soon)
 
     return render_template("index.html", events=events)
 

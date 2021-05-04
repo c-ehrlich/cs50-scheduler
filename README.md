@@ -16,3 +16,6 @@ Final project for Harvard University CS50. Web app that lets users create events
 * Strengthened my understanding of building web apps using Python and Flask
 * MVC
 * Normal Forms in relational databases (up to 4NF)
+
+## Todo
+* Implement delete event and link it on the relevant pages (created meetings and view when owned)
