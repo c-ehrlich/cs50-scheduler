@@ -208,7 +208,7 @@ def join(hash):
             event = db.execute("SELECT * FROM events WHERE hash = ?", hash)[0]
         except:
             return apology("There is no event with this hash")
-            
+
         slots = db.execute("SELECT slots.id, slots.time_start, slots.time_end, slots.user_id, users.username " +
                            "FROM slots " +
                            "JOIN users ON slots.user_id = users.id " +
@@ -228,9 +228,10 @@ def join(hash):
 def join_slot(event_hash, event_slot):
     if request.method == "POST":
         print("route /join/hash/slot is getting posted to")
+        user = session.get("user_id")
         # will want to do some input checking here etc
-        join_meeting(db, 1, 2)
-        return apology("TODO")
+        join_meeting(db, event_hash, event_slot, user)
+        return apology("Made it through join_meeting, now we're back in the route")
 
 
 # /joined
