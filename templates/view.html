@@ -21,19 +21,33 @@
     {% for slot in slots %}
         {{ slot.id }} <!-- id is just for debugging, delete later -->
         {{ slot.time_start }} - {{ slot.time_end}}
-        {% if slot.user_id == 0 %}
-            - {{ event.hash }} - {{ slot.id }}
-            <form action="/join/{{ event.hash }}/{{ slot.id }}" method="post">
-                <input type="submit" value="Pick this slot">
-            </form>
-        {% elif slot.user_id == user %}
-            {{ slot.username }}
-            <!-- give the slot a differenent div class that overrides its bg-color! -->
-            <form action="/leave/{{ event.hash }}" method="post">
-                <input type="submit" value="Leave this slot">
-            </form>
+        
+        <!-- USER IS THE ADMIN OF THE EVENT -->
+        {% if event.owner_id == user %}
+            {% if slot.user_id != 0 %}
+                <form action="/remove/{{ event.hash }}/{{ slot.user_id }}" method="post">
+                    <input type="submit" value="Cancel this slot">
+                </form>
+            {% endif %}
+        
+        <!-- USER IS NOT THE ADMIN OF THE EVENT -->
         {% else %}
-            {{ slot.username }}
+            {% if slot.user_id == 0 %}
+                - {{ event.hash }} - {{ slot.id }}
+                <form action="/join/{{ event.hash }}/{{ slot.id }}" method="post">
+                    <input type="submit" value="Pick this slot">
+                </form>
+            {% elif slot.user_id == user %}
+                {{ slot.username }}
+                <!-- give the slot a differenent div class that overrides its bg-color! -->
+                <form action="/leave/{{ event.hash }}" method="post">
+                    <input type="submit" value="Cancel this slot">
+                </form>
+            {% else %}
+                {{ slot.username }}
+
+            {% endif %}
+        
         {% endif %}
         <hr>
     {% endfor %}

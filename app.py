@@ -339,6 +339,26 @@ def register():
         return render_template("login.html")
 
 
+# /remove
+# removes an attendee from a meeting
+# works only if the user is the owner of the meeting
+@app.route("/remove/<meeting>/<user>", methods=["POST"])
+@login_required
+def remove(meeting, user):
+    if request.method == "POST":
+        
+        # Ensure that this is being attempted only by the owner of the meeting
+        currentuser = session.get("user_id")
+        owner = db.execute("SELECT owner_id FROM events WHERE hash = ?", meeting)[0]['owner_id']
+        print(f"Current: {currentuser} Owner: {owner}")
+        if currentuser != owner:
+            return apology("Only the owner of an event can cancel other people's appointments")
+
+        # remove the selected user from the meeting, then reload the meeting view
+        leave_meeting(db, meeting, user)
+        return redirect(f"/view/{meeting}")
+
+
 # /view/event_id
 # Views an event with a certain ID
 # Views it as a creator if user is the creator
