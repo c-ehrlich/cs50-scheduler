@@ -5,5 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Logged In Home Page</h1>
+    <h1>My Meetings in the next 7 days</h1>
+    {% for event in events %}
+        {{ event }}
+        <hr>
+    {% endfor %}
 {% endblock %}

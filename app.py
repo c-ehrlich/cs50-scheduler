@@ -50,7 +50,18 @@ if not db.execute("SELECT * FROM users WHERE id=0"):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    user = session.get("user_id")
+
+    events = db.execute("SELECT events.id, events.owner_id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end " +
+                        "FROM events " +
+                        "JOIN slots ON events.id = slots.event_id " +
+                        "JOIN users ON slots.user_id = users.id " +
+                        "WHERE users.id = ? " +
+                        "OR events.owner_id = ? " +
+                        "GROUP BY events.id ",
+                        user, user)
+
+    return render_template("index.html", events=events)
 
 
 # /create
@@ -178,7 +189,6 @@ def created():
 def home():
 
     if request.method == "GET":
-        print(">-< Callin' home")
         return redirect("/")
 
 
