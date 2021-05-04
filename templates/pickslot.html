@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Joined Meetings
+{% endblock %}
+
+{% block main %}
+    {{ event }}
+    <hr>
+        {% for slot in slots %}
+            {{ slot.id }} <!-- id is just for debugging, delete later -->
+            {{ slot.time_start }} - {{ slot.time_end}}
+            {% if slot.user_id == 0 %}
+                <input type="button" value="Pick this slot">
+            {% else %}
+                {{ slot.username }}
+            {% endif %}
+            <hr>
+        {% endfor %}
+        <input type="button" value="Done">
+{% endblock %}

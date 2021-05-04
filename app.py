@@ -184,18 +184,27 @@ def join_id():
 # /join/hash
 # Join a meeting with the selected hash (give a form to select a time slot)
 # If no hash is provided, display a field to enter a form
-@app.route("/join/<hash>", methods=["GET", "POST"])
+@app.route("/join/<hash>")
 @login_required
 def join(hash):
 
-    # User reached route via GA
+    # User reached route via GET
+    # Anticipated causes:
+    # 1. typing in a hash on /join and pressing enter
+    # 2. clicking a link with the format /join/hash in an email or something
     if request.method == "GET":
-        if not db.execute("SELECT * FROM events WHERE hash = ?", hash):
+
+        event = db.execute("SELECT * FROM events WHERE hash = ?", hash)
+        if not event:
             return apology("There is no event with this hash")
-        return apology("Found your event, but TODO")
+        slots = db.execute("SELECT slots.id, slots.time_start, slots.time_end, slots.user_id, users.username " +
+                           "FROM slots " +
+                           "JOIN users ON slots.user_id = users.id " +
+                           "WHERE slots.event_id = ?",
+                           event[0]['id'])
+        return render_template("pickslot.html", event=event, slots=slots)
     
-    if request.method == "POST":
-        return apology("TODO")
+    # DON'T THINK WE NEED POST HERE?
 
 
 # /joined
