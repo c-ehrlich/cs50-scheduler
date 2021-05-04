@@ -10,7 +10,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required
+from helpers import apology, login_required, join_meeting
 
 # Configure application
 app = Flask(__name__)
@@ -167,6 +167,16 @@ def created():
         return apology("No PUSH route exists yet for /created")
 
 
+# /home
+# returns the user to the index page after completing some action
+@app.route("/home")
+@login_required
+def home():
+
+    if request.method == "GET":
+        return redirect("/")
+
+
 # /join
 # prompts the user for a meeting hash, then redirects to join the meeting with that hash
 @app.route("/join", methods=["GET", "POST"])
@@ -194,17 +204,33 @@ def join(hash):
     # 2. clicking a link with the format /join/hash in an email or something
     if request.method == "GET":
 
-        event = db.execute("SELECT * FROM events WHERE hash = ?", hash)
-        if not event:
+        try:
+            event = db.execute("SELECT * FROM events WHERE hash = ?", hash)[0]
+        except:
             return apology("There is no event with this hash")
+            
         slots = db.execute("SELECT slots.id, slots.time_start, slots.time_end, slots.user_id, users.username " +
                            "FROM slots " +
                            "JOIN users ON slots.user_id = users.id " +
                            "WHERE slots.event_id = ?",
-                           event[0]['id'])
+                           event['id'])
         return render_template("pickslot.html", event=event, slots=slots)
     
     # DON'T THINK WE NEED POST HERE?
+
+
+# /join/hash/slot
+# User attempts to join a certain slot of a meeting
+# If they don't have a slot yet, it will give them that slot
+# If they already have a slot, it will switch them to that slot
+@app.route("/join/<event_hash>/<event_slot>", methods=["POST"])
+@login_required
+def join_slot(event_hash, event_slot):
+    if request.method == "POST":
+        print("route /join/hash/slot is getting posted to")
+        # will want to do some input checking here etc
+        join_meeting(db, 1, 2)
+        return apology("TODO")
 
 
 # /joined
