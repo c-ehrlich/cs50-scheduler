@@ -26,6 +26,12 @@
             <form action="/join/{{ event.hash }}/{{ slot.id }}" method="post">
                 <input type="submit" value="Pick this slot">
             </form>
+        {% elif slot.user_id == user %}
+            {{ slot.username }}
+            <!-- give the slot a differenent div class that overrides its bg-color! -->
+            <form action="/leave/{{ event.hash }}" method="post">
+                <input type="submit" value="Leave this slot">
+            </form>
         {% else %}
             {{ slot.username }}
         {% endif %}

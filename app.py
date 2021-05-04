@@ -246,6 +246,7 @@ def joined():
 def leave(event_hash):
     if request.method == "POST":
         leave_meeting(db, event_hash, session.get("user_id"))
+        return redirect(f"/view/{event_hash}")
 
 
 # /login
@@ -361,4 +362,7 @@ def view(event_id):
                            "JOIN events ON events.owner_id = users.id " +
                            "WHERE events.hash = ?", 
                            event_id)[0]['username']
-        return render_template("view.html", event=event, slots=slots, owner=owner)
+
+        user = session.get("user_id")
+        print(user)
+        return render_template("view.html", event=event, slots=slots, owner=owner, user=user)
