@@ -44,7 +44,37 @@ def join_meeting(db, event_hash, slot_id, user_id):
     # Add the user to the slot they chose
     db.execute("UPDATE slots SET user_id = ? WHERE id = ?", user_id, slot_id)
 
-    return apology("Hey we made it past the checks!")
+
+def leave_meeting(db, event_hash, user_id):
+    """
+    Makes a user leave the meeting
+    Will remove them from any slots they are occupying in the meeting
+    Will apologize on bad input
+    """
+    # Make sure the event exists
+    if (db.execute("SELECT COUNT(*) FROM events WHERE hash = ?", event_hash)[0]['COUNT(*)']) != 1:
+        return apology(f"Could not find an event with hash {event_hash}")
+
+    # Remove user from any slots in this event they may already be occupying
+    db.execute("UPDATE slots      "
+               "SET user_id = 0   "
+               "WHERE user_id = ? "
+               "AND event_id =    "
+               "   (SELECT id     "
+               "   FROM events    "
+               "   WHERE hash = ?)",
+               user_id, event_hash)
+
+
+
+
+
+"""
+OLD CS50 HELPER FUNCTIONS BELOW HERE
+IF SOMETHING IS WRONG WITH EITHER NEW CODE OR ONE OF THESE FUNCTIONS,
+IT'S PROBABLY THE NEW CODE
+(BECAUSE I DIDN'T WRITE THESE)
+"""
 
 
 def apology(message, code=400):

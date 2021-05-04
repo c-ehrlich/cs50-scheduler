@@ -10,7 +10,11 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, join_meeting
+# old helper functions
+from helpers import apology, login_required
+
+# new helper functions
+from helpers import join_meeting, leave_meeting
 
 # Configure application
 app = Flask(__name__)
@@ -188,35 +192,19 @@ def join_id():
 
     if request.method == "POST":
         hash_id = request.form.get("hash_id")
-        return redirect(f"join/{hash_id}")
-
-
-# /join/hash
-# Join a meeting with the selected hash (give a form to select a time slot)
-# If no hash is provided, display a field to enter a form
-@app.route("/join/<hash>")
-@login_required
-def join(hash):
-
-    # User reached route via GET
-    # Anticipated causes:
-    # 1. typing in a hash on /join and pressing enter
-    # 2. clicking a link with the format /join/hash in an email or something
-    if request.method == "GET":
 
         try:
-            event = db.execute("SELECT * FROM events WHERE hash = ?", hash)[0]
+            event = db.execute("SELECT * FROM events WHERE hash = ?", hash_id)[0]
         except:
             return apology("There is no event with this hash")
 
-        slots = db.execute("SELECT slots.id, slots.time_start, slots.time_end, slots.user_id, users.username " +
-                           "FROM slots " +
-                           "JOIN users ON slots.user_id = users.id " +
-                           "WHERE slots.event_id = ?",
-                           event['id'])
-        return render_template("pickslot.html", event=event, slots=slots)
-    
-    # DON'T THINK WE NEED POST HERE?
+        # slots = db.execute("SELECT slots.id, slots.time_start, slots.time_end, slots.user_id, users.username " +
+        #                    "FROM slots " +
+        #                    "JOIN users ON slots.user_id = users.id " +
+        #                    "WHERE slots.event_id = ?",
+        #                    event['id'])
+
+        return redirect(f"/view/{hash_id}")
 
 
 # /join/hash/slot
@@ -231,7 +219,7 @@ def join_slot(event_hash, event_slot):
         user = session.get("user_id")
         # will want to do some input checking here etc
         join_meeting(db, event_hash, event_slot, user)
-        return apology("Made it through join_meeting, now we're back in the route")
+        return redirect(f"/view/{event_hash}")
 
 
 # /joined
@@ -249,6 +237,15 @@ def joined():
 
     else:
         return apology("No PUSH route exists yet for /joined")
+
+
+# /leave/event_hash
+# makes a user leave a meeting with a certain hash
+@app.route("/leave/<event_hash>", methods=["POST"])
+@login_required
+def leave(event_hash):
+    if request.method == "POST":
+        leave_meeting(db, event_hash, session.get("user_id"))
 
 
 # /login
@@ -348,13 +345,20 @@ def register():
 @app.route("/view/<event_id>")
 @login_required
 def view(event_id):
-    event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)[0]
-    slots = db.execute("SELECT * FROM slots " +
-                       "JOIN events ON events.id = slots.event_id " +
-                       "WHERE events.hash = ?", 
-                       event_id)
-    owner = db.execute("SELECT * FROM users " +
-                       "JOIN events ON events.owner_id = users.id " +
-                       "WHERE events.hash = ?", 
-                       event_id)[0]['username']
-    return render_template("view.html", event=event, slots=slots, owner=owner)
+    if request.method == "GET":
+        event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)[0]
+        slots = db.execute("SELECT * FROM slots " +
+                           # "JOIN users ON slots.user_id = users.id " +
+                           "WHERE slots.event_id = ?", 
+                           event['id'])
+
+        for slot in slots:
+            slot['username'] = db.execute("SELECT username FROM users " +
+                                       "JOIN slots ON users.id = slots.user_id " +
+                                       "WHERE users.id = ?", slot['user_id'])[0]['username']
+
+        owner = db.execute("SELECT * FROM users " +
+                           "JOIN events ON events.owner_id = users.id " +
+                           "WHERE events.hash = ?", 
+                           event_id)[0]['username']
+        return render_template("view.html", event=event, slots=slots, owner=owner)
