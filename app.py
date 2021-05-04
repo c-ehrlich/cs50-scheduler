@@ -178,6 +178,7 @@ def created():
 def home():
 
     if request.method == "GET":
+        print(">-< Callin' home")
         return redirect("/")
 
 
