@@ -85,7 +85,38 @@ def account():
     # User reached route via POST
     # Usually by filling out the change account details form
     if request.method == "POST":
-        return apology("todo")
+
+        # attempt to load user from db
+        user_id = session.get("user_id")
+
+        # check that current password is correct
+        pw =  db.execute("SELECT * FROM users WHERE id = ?", user_id)[0]['hash']
+        if not check_password_hash(pw, request.form.get("current_pw")):
+            return apology("invalid password")
+
+        # get form data TK move down as far as possible
+        new_name = request.form.get("name")
+        new_email = request.form.get("email")
+        new_password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Check new password matches new confirmation
+        if new_password != confirmation:
+            return apology("please make sure the new password and confirmation match")
+
+        # update values in users db
+        if new_name != "":
+            db.execute("UPDATE users SET username = ? WHERE id = ?", new_name, user_id)
+        if new_email != "":
+            db.execute("UPDATE users SET email = ? WHERE id = ?", new_email, user_id)
+        if new_password != "" and new_password == confirmation:
+            db.execute("UPDATE users SET hash = ?", generate_password_hash(new_password))
+
+        session.clear()
+
+        # show a banner that their settings were updated
+
+        return redirect("/")
 
 
 # /create
