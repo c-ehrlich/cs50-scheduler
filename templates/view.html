@@ -17,6 +17,14 @@
         Schduled for: {{ event.date }}
         <hr>
         Scheduled by {{ owner }}
+        {% if event.owner_id == user %}
+        <form action="/edit/{{ event.hash }}" method="post">
+            <input type="submit" value="Edit">
+        </form>  
+        <form action="/delete_from_view/{{ event.id }}" method="post">
+            <input type="submit" value="Delete">
+        </form>    
+        {% endif %}
     <h3>Slots</h3>
     {% for slot in slots %}
         {{ slot.id }} <!-- id is just for debugging, delete later -->
@@ -25,6 +33,7 @@
         <!-- USER IS THE ADMIN OF THE EVENT -->
         {% if event.owner_id == user %}
             {% if slot.user_id != 0 %}
+                {{ slot.username }}
                 <form action="/remove/{{ event.hash }}/{{ slot.user_id }}" method="post">
                     <input type="submit" value="Cancel this slot">
                 </form>

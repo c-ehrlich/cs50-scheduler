@@ -243,19 +243,18 @@ def created():
 @login_required
 def delete_from_created(event_id):
     if request.method == "POST":
-        print("we're in delete_from_created")
         delete_meeting(db, event_id, session.get("user_id"))
-        return redirect("created")
+        return redirect("/created")
 
 
-# /delete_from_edit
+# /delete_from_view
 # attempts to delete an event, then returns home
-@app.route("/delete_from_edit/<event_id>", methods=["POST"])
+@app.route("/delete_from_view/<event_id>", methods=["POST"])
 @login_required
-def delete_from_edit(event_id):
+def delete_from_view(event_id):
     if request.method == "POST":
-        print("We made it into /delete_from_event/event_id!")
-        return apology("TODO")
+        delete_meeting(db, event_id, session.get("user_id"))
+        return redirect("/")
 
 
 # /home
@@ -439,7 +438,6 @@ def reset_password():
         # send a banner saying the new password is temp1234
 
         return render_template("login.html")
-
 
 
 # /remove
