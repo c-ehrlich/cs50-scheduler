@@ -12,6 +12,9 @@
             <p>{{ meeting.date }}</p>
             <p>{{ meeting.description }}</p>
             <p>{{ meeting.time_start }} - {{ meeting.time_end }}</p>
+            <form action="/view/{{ meeting.hash }}" method="get">
+                <input type=submit value="View">
+            </form>
         </div>
     {% endfor %}
 {% endblock %}

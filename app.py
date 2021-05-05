@@ -285,12 +285,6 @@ def join_id():
         except:
             return apology("There is no event with this hash")
 
-        # slots = db.execute("SELECT slots.id, slots.time_start, slots.time_end, slots.user_id, users.username " +
-        #                    "FROM slots " +
-        #                    "JOIN users ON slots.user_id = users.id " +
-        #                    "WHERE slots.event_id = ?",
-        #                    event['id'])
-
         return redirect(f"/view/{hash_id}")
 
 
@@ -304,7 +298,7 @@ def join_slot(event_hash, event_slot):
     if request.method == "POST":
         user = session.get("user_id")
 
-        # will want to do some input checking here etc
+        # TKTK will want to do some input checking here etc
 
         join_meeting(db, event_hash, event_slot, user)
         return redirect(f"/view/{event_hash}")
@@ -425,6 +419,27 @@ def register():
         
         # Return to the login page
         return render_template("login.html")
+
+
+# /reset_password
+# resets a chosen user's password
+@app.route("/reset_password", methods=["GET", "POST"])
+def reset_password():
+    if request.method == "GET":
+        return render_template("reset_pw.html")
+
+    if request.method == "POST":
+        email = request.form.get("email")
+        user = db.execute("SELECT * FROM users WHERE email = ?", email)
+        if len(user) != 1:
+            return apology("Could not find a user with that email address")
+        pw = generate_password_hash("temp1234")
+        db.execute("UPDATE users SET hash = ? WHERE email = ?", pw, email)
+
+        # send a banner saying the new password is temp1234
+
+        return render_template("login.html")
+
 
 
 # /remove
