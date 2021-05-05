@@ -181,7 +181,7 @@ def create():
     
         # add the new event to the events table
         db.execute("INSERT INTO events (eventname, description, date, owner_id, hash) VALUES (?, ?, ?, ?, ?)",
-		           name, description, date, session.get("user_id"), uid)
+		           name, description, date_string, session.get("user_id"), uid)
                    
         # get the event id
         event_id = db.execute("SELECT * FROM events WHERE hash = ?", uid)[0]['id']
@@ -223,9 +223,6 @@ def create_slots():
 
             # validate that it's valid times     
             date_format = "%H:%M"
-
-            print(value)
-
             try:
                 datetime.strptime(value, date_format)
             except ValueError:
@@ -246,7 +243,14 @@ def create_slots():
         event_id = db.execute("SELECT event_id FROM slots WHERE id = ?", slot_id)[0]['event_id']
         event_hash = db.execute("SELECT hash FROM events WHERE id = ?", event_id)[0]['hash']
 
-        # TKTK TODO maybe end by showing a nice layout of the event with slot start and end times?
+        slots = db.execute("SELECT time_start, time_end FROM slots WHERE event_id = ?", event_id)
+
+        slots = sorted(slots, key = lambda i: i['time_start'])
+
+        for slot in slots:
+            if slot['time_start'] > slot['time_end']:
+                return apology("Slots can't end before they start!")
+
         return redirect(f"view/{event_hash}")
 
 
