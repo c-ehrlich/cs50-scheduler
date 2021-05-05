@@ -7,7 +7,7 @@
 {% block main %}
     {% for meeting in meetings %}
         <div class="event-main">
-            <p>Hash: {{ meeting.hash }}</p>
+            <p>Hash: {{ meeting.hash }} id: {{ meeting.id }}</p> 
             <h2>Title: {{ meeting.eventname }}</h2>
             <p>{{ meeting.date }}</p>
             <p>{{ meeting.description }}</p>
@@ -16,8 +16,38 @@
                 <input type=submit value="View">
             </form>
             <form>
-                <input type=button value="Delete">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm_delete_{{ meeting.id }}">
+                    Launch Delete Modal {{ meeting.id }}
+                </button>
             </form>
+            <!-- Modal -->
+            <div class="modal fade"  id="confirm_delete_{{ meeting.id }}"tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Meeting</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the meeting "{{ meeting.eventname }}" on {{ meeting.date }}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="/delete_from_created/{{ meeting.id }}" method="post">
+                                <button type="submit" class="btn btn-primary">Delete {{ meeting.id }}</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     {% endfor %}
 {% endblock %}
+
+<!-- <form action="/delete_from_created/{{ meeting.id }}" method="post">
+    <input type="submit" class="btn btn-primary" value="delete">
+</form> -->

@@ -20,8 +20,10 @@ def delete_meeting(db, event_id, user_id):
         return apology("Sorry, you don't own this event!")
     
     # Make sure the event exists
-    if (db.execute("SELECT COUNT(*) FROM events WHERE hash = ?", event_hash)[0]['COUNT(*)']) != 1:
-        return apology(f"Could not find an event with hash {event_hash}")
+    if (db.execute("SELECT COUNT(*) FROM events WHERE id = ?", event_id)[0]['COUNT(*)']) != 1:
+        return apology(f"Could not find an event with hash {event_id}")
+
+    print(f"deleting event {event_id}")
 
     # Delete all slots associated with this event
     db.execute("DELETE FROM slots WHERE event_id = ?", event_id)

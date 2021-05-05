@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # new helper functions
-from helpers import join_meeting, leave_meeting
+from helpers import delete_meeting, join_meeting, leave_meeting
 
 # Configure application
 app = Flask(__name__)
@@ -189,6 +189,27 @@ def created():
         return apology("No PUSH route exists yet for /created")
 
 
+# /delete_from_created
+# attempts to delete an event, then reloads the created events list
+@app.route("/delete_from_created/<event_id>", methods=["POST"])
+@login_required
+def delete_from_created(event_id):
+    if request.method == "POST":
+        print("we're in delete_from_created")
+        delete_meeting(db, event_id, session.get("user_id"))
+        return redirect("created")
+
+
+# /delete_from_edit
+# attempts to delete an event, then returns home
+@app.route("/delete_from_edit/<event_id>", methods=["POST"])
+@login_required
+def delete_from_edit(event_id):
+    if request.method == "POST":
+        print("We made it into /delete_from_event/event_id!")
+        return apology("TODO")
+
+
 # /home
 # returns the user to the index page after completing some action
 @app.route("/home")
@@ -233,9 +254,10 @@ def join_id():
 @login_required
 def join_slot(event_hash, event_slot):
     if request.method == "POST":
-        print("route /join/hash/slot is getting posted to")
         user = session.get("user_id")
+
         # will want to do some input checking here etc
+
         join_meeting(db, event_hash, event_slot, user)
         return redirect(f"/view/{event_hash}")
 
