@@ -7,8 +7,8 @@
 {% block main %}
     {% for meeting in meetings %}
         <div class="event-main">
-            <p>Hash: {{ meeting.hash }} id: {{ meeting.id }}</p> 
-            <h2>Title: {{ meeting.eventname }}</h2>
+            <p>{{ meeting.hash }}</p> 
+            <h2>{{ meeting.eventname }}</h2>
             <p>{{ meeting.date }}</p>
             <p>{{ meeting.description }}</p>
             <p>{{ meeting.slots_full }} / {{ meeting.slots_total }} slots filled</p>
@@ -16,8 +16,8 @@
                 <input type=submit value="View">
             </form>
             <form>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm_delete_{{ meeting.id }}">
-                    Launch Delete Modal {{ meeting.id }}
+                <button type="button" data-toggle="modal" data-target="#confirm_delete_{{ meeting.id }}">
+                    Delete
                 </button>
             </form>
             <!-- Modal -->
