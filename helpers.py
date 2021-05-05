@@ -8,6 +8,28 @@ from functools import wraps
 from cs50 import SQL
 
 
+def delete_meeting(db, event_id, user_id):
+    """
+    Deletes a meeting and all slots associated with it
+    (!) This uses event_id instead of event_hash, because id is not user-facing
+    Works only if the user is the owner of the meeting
+    """
+
+    # Make sure the user trying to delete the event actually owns it
+    if user_id != db.execute("SELECT owner_id FROM events WHERE id = ?", event_id)[0]['owner_id']:
+        return apology("Sorry, you don't own this event!")
+    
+    # Make sure the event exists
+    if (db.execute("SELECT COUNT(*) FROM events WHERE hash = ?", event_hash)[0]['COUNT(*)']) != 1:
+        return apology(f"Could not find an event with hash {event_hash}")
+
+    # Delete all slots associated with this event
+    db.execute("DELETE FROM slots WHERE event_id = ?", event_id)
+
+    # Delete the event itself
+    db.execute("DELETE FROM events WHERE id = ?", event_id)
+    
+
 def join_meeting(db, event_hash, slot_id, user_id):
     """
     Makes a user join a meeting.

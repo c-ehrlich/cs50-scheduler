@@ -32,4 +32,6 @@ Final project for Harvard University CS50. Web app that lets users create events
     * slots should not overlap (order them, then check if end time of one is later than start time of the next)
 * Add button to "my joined meetings" to get to the edit page of a meeting
 
+* figure out how flashed messages work (CS50 Finance had them)
+
 ## Todo (Design) 
