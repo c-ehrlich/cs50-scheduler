@@ -168,7 +168,8 @@ def create():
         # Create UUID
         # This is a unique 8-digit (A-Z) ID to identify each event
         # Used for email referral links, search, etc
-        # TKTK turn this into a function
+        # I would turn this into a function if I could figure out why
+        # I get stuff returned as <class 'str'> instead of string
         uid = ""
 
         while uid == "":
@@ -339,8 +340,7 @@ def join_slot(event_hash, event_slot):
     if request.method == "POST":
         user = session.get("user_id")
 
-        # TKTK will want to do some input checking here etc
-
+        # don't need to sanitize input here because the join_meeting function does it
         join_meeting(db, event_hash, event_slot, user)
         return redirect(f"/view/{event_hash}")
 
