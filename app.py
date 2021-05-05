@@ -143,13 +143,19 @@ def create():
             return apology("Description must be at least 1 character long")
         
         # Check if date is properly formatted
-        date = request.form.get("date")       
+        date_string = request.form.get("date")       
         date_format = "%Y-%m-%d"
 
         try:
-            datetime.strptime(date, date_format)
+            datetime.strptime(date_string, date_format)
         except ValueError:
             return apology("Please enter a valid date")
+
+        # Check that the user isn't trying to make an event in the past
+        date_formatted = datetime.strptime(date_string, date_format).date()
+        print(f"{date_formatted} | {date.today()}")
+        if date_formatted < date.today():
+            return apology("Please don't try to schedule a meeting in the past. That's rude!")
 
         # Make sure that the number of slots is an integer between 1 and 50
         slots = request.form.get("num_slots")
