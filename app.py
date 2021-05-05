@@ -214,6 +214,19 @@ def create_slots():
             temp = key.split(".")
             index = int(temp[0])
             start_end = temp[1]
+
+            # validate that it's valid times     
+            date_format = "%H:%M"
+
+            print(value)
+
+            try:
+                datetime.strptime(value, date_format)
+            except ValueError:
+                # delete the event
+                event_id = db.execute("SELECT event_id FROM slots WHERE id = ?", index)[0]['event_id']
+                delete_meeting(db, event_id, session.get("user_id"))
+                return apology("Please submit valid times for all slots")
             
             # Update the slot start and end times in the database
             if start_end == "start":
