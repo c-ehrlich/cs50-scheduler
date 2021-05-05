@@ -132,15 +132,37 @@ def create():
     # User reached route via POST
     # Usually by filling out details for a new event and clicking submit
     if request.method == "POST":
-        # Get data from form
+        # Validate Name
         name = request.form.get("name")
+        if name == "":
+            return apology("Name must be at least 1 character long")
+
+        # Validate Description
         description = request.form.get("description")
-        date = request.form.get("date")
-        slots = int(request.form.get("num_slots"))
+        if description == "":
+            return apology("Description must be at least 1 character long")
+        
+        # Check if date is properly formatted
+        date = request.form.get("date")       
+        date_format = "%Y-%m-%d"
+
+        try:
+            datetime.strptime(date, date_format)
+        except ValueError:
+            return apology("Please enter a valid date")
+
+        # Make sure that the number of slots is an integer between 1 and 50
+        slots = request.form.get("num_slots")
+        if not slots.isnumeric():
+            return apology("Number of slots needs to be an integer between 1 and 50!")
+        slots = int(slots)
+        if not 0 < slots <= 50:
+            return apology("Number of slots needs to be an integer between 1 and 50!")
 
         # Create UUID
         # This is a unique 8-digit (A-Z) ID to identify each event
         # Used for email referral links, search, etc
+        # TKTK turn this into a function
         uid = ""
 
         while uid == "":
@@ -150,7 +172,6 @@ def create():
             # See if an event with that ID already exists
             if db.execute("SELECT * FROM events WHERE hash = ?", uid):
                 uid = "";
-                print("Seems like there's already an event with this ID")
     
         # add the new event to the events table
         db.execute("INSERT INTO events (eventname, description, date, owner_id, hash) VALUES (?, ?, ?, ?, ?)",
