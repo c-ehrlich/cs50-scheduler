@@ -251,6 +251,11 @@ def create_slots():
             if slot['time_start'] > slot['time_end']:
                 return apology("Slots can't end before they start!")
 
+        for i in range(1, len(slots)):
+            print(f"checking {i}")
+            if slots[i]['time_start'] < slots[i-1]['time_end']:
+                return apology("Slot times can't overlap!")
+
         return redirect(f"view/{event_hash}")
 
 
