@@ -71,6 +71,23 @@ def index():
     return render_template("index.html", events=events)
 
 
+# /account
+# GET shows the account page
+# POST edits account information
+@app.route("/account", methods=["GET", "POST"])
+@login_required
+def account():
+    # User reached route via GET
+    # Usually by clicking on it in the header
+    if request.method == "GET":
+        return render_template("account.html")
+
+    # User reached route via POST
+    # Usually by filling out the change account details form
+    if request.method == "POST":
+        return apology("todo")
+
+
 # /create
 # Create a new event
 @app.route("/create", methods=["GET", "POST"])
