@@ -8,6 +8,22 @@ from functools import wraps
 from cs50 import SQL
 
 
+def apology(message, code=400):
+    """Render message as an apology to user."""
+    print("Rendering Apology") #TKTK debug delete this line
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("apology.html", top=code, bottom=escape(message)), code
+
+
 def delete_meeting(db, event_id, user_id):
     """
     Deletes a meeting and all slots associated with it
@@ -95,30 +111,40 @@ def leave_meeting(db, event_hash, user_id):
                user_id, event_hash)
 
 
+def verify_slots(slots):
+    """
+    (!) INPUT: takes a list of dictionaries in the exact format
+    [{'time_start': '10:00', 'time_end': '10:25'},...]
+    if the key names are wrong or the values are not times in this format, 
+        the function will break. Sorry!!!
+    GOOD NEWS: the list does not need to be in order. We do that in here
+    
+    OUTPUT: none
+    But it throws an error if any slots have end times that are equal to or earlier than their start times
+    Or if there is any overlap in time between any of the slots
+    """
+
+    # Sort slots by start time
+    slots = sorted(slots, key = lambda i: i['time_start'])
+
+    # Make sure none of the slots end before they start or at the same time
+    for slot in slots:
+        if slot['time_start'] >= slot['time_end']:
+            return "Slots can't end before they start!"
+
+    # Make sure none of the slots overlap
+    for i in range(1, len(slots)):
+        print(f"checking overlap {i}")
+        if slots[i]['time_start'] < slots[i-1]['time_end']:
+            return "Slot times can't overlap!"
+
+    return ""
 
 
 
-"""
-OLD CS50 HELPER FUNCTIONS BELOW HERE
-IF SOMETHING IS WRONG WITH EITHER NEW CODE OR ONE OF THESE FUNCTIONS,
-IT'S PROBABLY THE NEW CODE
-(BECAUSE I DIDN'T WRITE THESE)
-"""
 
 
-def apology(message, code=400):
-    """Render message as an apology to user."""
-    def escape(s):
-        """
-        Escape special characters.
 
-        https://github.com/jacebrowning/memegen#special-characters
-        """
-        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
-            s = s.replace(old, new)
-        return s
-    return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
 def login_required(f):

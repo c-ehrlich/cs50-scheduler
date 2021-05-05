@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # new helper functions
-from helpers import delete_meeting, join_meeting, leave_meeting
+from helpers import delete_meeting, join_meeting, leave_meeting, verify_slots
 
 # Configure application
 app = Flask(__name__)
@@ -243,18 +243,11 @@ def create_slots():
         event_id = db.execute("SELECT event_id FROM slots WHERE id = ?", slot_id)[0]['event_id']
         event_hash = db.execute("SELECT hash FROM events WHERE id = ?", event_id)[0]['hash']
 
+        # Make sure nothing funny is going on with the slots
         slots = db.execute("SELECT time_start, time_end FROM slots WHERE event_id = ?", event_id)
-
-        slots = sorted(slots, key = lambda i: i['time_start'])
-
-        for slot in slots:
-            if slot['time_start'] > slot['time_end']:
-                return apology("Slots can't end before they start!")
-
-        for i in range(1, len(slots)):
-            print(f"checking {i}")
-            if slots[i]['time_start'] < slots[i-1]['time_end']:
-                return apology("Slot times can't overlap!")
+        apology_text = verify_slots(slots)
+        if apology_text != "":
+            return apology(f"{apology_text}")
 
         return redirect(f"view/{event_hash}")
 
