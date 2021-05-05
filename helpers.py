@@ -55,6 +55,11 @@ def join_meeting(db, event_hash, slot_id, user_id):
     if (db.execute("SELECT COUNT(*) FROM slots WHERE slots.id = ? AND slots.user_id = 0", slot_id)[0]['COUNT(*)']) != 1:
         return apology(f"Slot {slot_id} is not empty!")
 
+    # Make sure the user doesn't own this event
+    # This should also be implemented in the HTML of any event view etc, but doing it here to be sure ^_^
+    if user_id == db.execute("SELECT owner_id FROM events WHERE hash = ?", event_hash)[0]['owner_id']:
+        return apology("You can't join your own meeting!")
+
     # Remove user from any slots in this event they may already be occupying
     db.execute("UPDATE slots      "
                "SET user_id = 0   "
