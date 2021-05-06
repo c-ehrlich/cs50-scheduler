@@ -393,10 +393,7 @@ def joined():
         for meeting in pastmeet:
             meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
             meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
-
-        print(meetings)
-        print(pastmeet)
-
+            
         return render_template("joined.html", meetings=meetings, pastmeet=pastmeet)
 
     else:
