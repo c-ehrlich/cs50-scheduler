@@ -109,6 +109,30 @@ def leave_meeting(db, event_hash, user_id):
                "   FROM events    "
                "   WHERE hash = ?)",
                user_id, event_hash)
+                
+
+def get_end_time(db, event_hash):
+    """
+    Returns the end time of a meeting
+    """
+    event_id = db.execute("SELECT id FROM events WHERE hash = ?", event_hash)[0]['id']
+    try:
+        value = db.execute("SELECT time_end FROM slots WHERE event_id = ? ORDER BY time_start DESC LIMIT 1", event_id)[0]['time_end']
+        return value
+    except:
+        return None
+
+
+def get_start_time(db, event_hash):
+    """
+    Returns the start time of a meeting
+    """
+    event_id = db.execute("SELECT id FROM events WHERE hash = ?", event_hash)[0]['id']
+    try:
+        value = db.execute("SELECT time_start FROM slots WHERE event_id = ? ORDER BY time_start ASC LIMIT 1", event_id)[0]['time_start']
+        return value
+    except:
+        return None
 
 
 def verify_slots(slots):

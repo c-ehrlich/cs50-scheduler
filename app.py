@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # new helper functions
-from helpers import delete_meeting, join_meeting, leave_meeting, verify_slots
+from helpers import delete_meeting, join_meeting, leave_meeting, verify_slots, get_start_time, get_end_time
 
 # Configure application
 app = Flask(__name__)
@@ -273,6 +273,11 @@ def created():
                                                 meeting['id'])[0]['COUNT(*)']            
             meeting['slots_full'] = meeting['slots_total'] - meeting['slots_empty']
 
+        # Add information about meeting start time to the meetings
+        for meeting in meetings:
+            meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
+            meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
+
         # Show the selected meetings
         return render_template("created.html", meetings=meetings)
 
@@ -356,6 +361,12 @@ def joined():
                               "JOIN users ON slots.user_id = users.id " +
                               "WHERE users.id = ?",
                               session.get("user_id"))
+
+        # Add information about meeting start time and meeting end time to meetings
+        for meeting in meetings:
+            meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
+            meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
+
         return render_template("joined.html", meetings=meetings)
 
     else:
