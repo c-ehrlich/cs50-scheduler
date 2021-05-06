@@ -387,11 +387,6 @@ def joined():
                               "ORDER BY events.date ASC",
                               session.get("user_id"), today)
 
-        # Add information about meeting start time and meeting end time to meetings
-        for meeting in meetings:
-            meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
-            meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
-
         # get past meetings
         pastmeet = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
                               "JOIN slots ON events.id = slots.event_id " +
@@ -401,8 +396,8 @@ def joined():
                               "ORDER BY events.date DESC",
                               session.get("user_id"), today)
 
-         # Add information about meeting start time and meeting end time to pastmeets
-        for meeting in pastmeet:
+         # Add information about meeting start time and meeting end time to meetings and pastmeets
+        for meeting in meetings + pastmeet:
             meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
             meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
 
