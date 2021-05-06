@@ -362,18 +362,42 @@ def join_slot(event_hash, event_slot):
 @login_required
 def joined():
     if request.method == "GET":
+
+        # get today's date
+        today = date.today().strftime("%Y-%m-%d")
+
+        # get today & future meetings
         meetings = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
                               "JOIN slots ON events.id = slots.event_id " +
                               "JOIN users ON slots.user_id = users.id " +
-                              "WHERE users.id = ?",
-                              session.get("user_id"))
+                              "WHERE users.id = ? " +
+                              "AND events.date >= ? " +
+                              "ORDER BY events.date ASC",
+                              session.get("user_id"), today)
 
         # Add information about meeting start time and meeting end time to meetings
         for meeting in meetings:
             meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
             meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
 
-        return render_template("joined.html", meetings=meetings)
+        # get past meetings
+        pastmeet = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
+                              "JOIN slots ON events.id = slots.event_id " +
+                              "JOIN users ON slots.user_id = users.id " +
+                              "WHERE users.id = ? " +
+                              "AND events.date < ? " +
+                              "ORDER BY events.date DESC",
+                              session.get("user_id"), today)
+
+         # Add information about meeting start time and meeting end time to pastmeets
+        for meeting in pastmeet:
+            meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
+            meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
+
+        print(meetings)
+        print(pastmeet)
+
+        return render_template("joined.html", meetings=meetings, pastmeet=pastmeet)
 
     else:
         return apology("No PUSH route exists yet for /joined")
