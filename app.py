@@ -561,8 +561,8 @@ def view(event_id):
         event['time_meeting_end'] = get_end_time(db, event['hash'])
 
         slots = db.execute("SELECT * FROM slots " +
-                           # "JOIN users ON slots.user_id = users.id " +
-                           "WHERE slots.event_id = ?", 
+                           "WHERE slots.event_id = ? " +
+                           "ORDER BY slots.time_start ASC", 
                            event['id'])
 
         for slot in slots:
