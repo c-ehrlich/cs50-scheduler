@@ -707,8 +707,8 @@ def view(event_id):
 
         for slot in slots:
             slot['username'] = db.execute("SELECT username FROM users " +
-                                       "JOIN slots ON users.id = slots.user_id " +
-                                       "WHERE users.id = ?", slot['user_id'])[0]['username']
+                                         "JOIN slots ON users.id = slots.user_id " +
+                                         "WHERE users.id = ?", slot['user_id'])[0]['username']
 
         owner = db.execute("SELECT * FROM users " +
                            "JOIN events ON events.owner_id = users.id " +
