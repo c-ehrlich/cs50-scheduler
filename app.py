@@ -66,7 +66,8 @@ def index():
                         "JOIN users ON slots.user_id = users.id " +
                         "WHERE (users.id = ? OR events.owner_id = ?) " +
                         "AND events.date >= ? AND events.date < ?"
-                        "GROUP BY events.id ",
+                        "GROUP BY events.id " + 
+                        "ORDER BY events.date ASC",
                         user, user, today, soon)
 
     # add total start time
@@ -338,8 +339,6 @@ def edit(event_hash):
         # check if the user owns the event
         if session.get("user_id") != event['owner_id']:
             return apology("Sorry, you don't own this event!")
-
-        print(event) #TKTK debug
 
         # show the edit page for that event
         return render_template("edit.html", event=event)

@@ -6,6 +6,9 @@
 
 {% block main %}
     <h3>Upcoming</h3>
+    {% if not meetings|length %}
+        <p>No upcoming events</p>
+    {% endif %}
     {% for meeting in meetings %}
         <div class="event-main">
             <p>{{ meeting.hash }}</p> 
@@ -49,6 +52,9 @@
         </div>
     {% endfor %}
     <h3>Past</h3>
+    {% if not pastmeet|length %}
+        <p>No past events</p>
+    {% endif %}
     {% for meeting in pastmeet %}
         <div class="event-main">
             <p>{{ meeting.hash }}</p> 
