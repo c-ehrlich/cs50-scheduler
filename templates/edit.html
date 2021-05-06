@@ -1,1 +1,16 @@
-TODO
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block main %}
+    <h3>Event</h3>
+    {{ event }}
+    <form action="/edit/{{ event.hash }}" method="post">
+        <input autocomplete="off" class="form-control" name="name" value="{{ event.eventname }}" type="text">
+        <input autocomplete="off" class="form-control" name="description" value="{{ event.description }}" type="text">
+        <input autocomplete="off" class="form-control" name="date" value="{{ event.date }}" type="date">
+        <button class="btn btn-primary" type="submit">Submit Changes</button>
+    </form>
+{% endblock %}

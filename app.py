@@ -171,11 +171,9 @@ def create():
         if not 0 < slots <= 50:
             return apology("Number of slots needs to be an integer between 1 and 50!")
 
-        # Create UUID
+        # Create UUID/hash
         # This is a unique 8-digit (A-Z) ID to identify each event
         # Used for email referral links, search, etc
-        # I would turn this into a function if I could figure out why
-        # I get stuff returned as <class 'str'> instead of string
         uid = ""
 
         while uid == "":
@@ -322,6 +320,70 @@ def delete_from_view(event_id):
         delete_meeting(db, event_id, session.get("user_id"))
         return redirect("/")
 
+
+# edit/<event_id>
+# edits an event
+@app.route("/edit/<event_hash>", methods=["GET", "POST"])
+@login_required
+def edit(event_hash):
+    if request.method == "GET":
+
+        # check if the event exists
+        if (db.execute("SELECT COUNT(*) FROM events WHERE hash = ?", event_hash)[0]['COUNT(*)']) != 1:
+            return apology(f"Could not find an event with hash {event_hash}")
+
+        # get the event we're editing
+        event = db.execute("SELECT * FROM events WHERE hash = ?", event_hash)[0]
+
+        # check if the user owns the event
+        if session.get("user_id") != event['owner_id']:
+            return apology("Sorry, you don't own this event!")
+
+        # show the edit page for that event
+        return render_template("edit.html", event=event)
+
+    if request.method == "POST":
+
+        # check if the event exists
+        if (db.execute("SELECT COUNT(*) FROM events WHERE hash = ?", event_hash)[0]['COUNT(*)']) != 1:
+            return apology(f"abc Could not find an event with hash {event_hash}")
+
+        # get the event we're editing
+        event = db.execute("SELECT * FROM events WHERE hash = ?", event_hash)[0]
+
+        # check if the user owns the event
+        if session.get("user_id") != event['owner_id']:
+            return apology("Sorry, you don't own this event!")
+
+        # validate name input
+        name = request.form.get("name")
+        if name == "":
+            return apology("Name must be at least 1 character long")
+
+        # validate description input
+        description = request.form.get("description")
+        if description == "":
+            return apology("Description must be at least 1 character long")
+
+        # validate date input
+        date_input = request.form.get("date")
+        date_format = "%Y-%m-%d"
+
+        try:
+            datetime.strptime(date_input, date_format)
+        except ValueError:
+            return apology("Please enter a valid date")
+        
+        date_formatted = datetime.strptime(date_input, date_format).date()
+        if date_formatted < date.today():
+            return apology("Please don't try to schedule a meeting in the past. That's rude!")
+
+        # update event & prepare to feed it to return function
+        db.execute("UPDATE events SET eventname = ?, description = ?, date = ? WHERE hash = ?",
+                   name, description, date_input, event['hash'])
+        event = db.execute("SELECT * FROM events WHERE hash = ?", event_hash)[0]
+
+        return render_template("edit.html", event=event)
 
 # /home
 # returns the user to the index page after completing some action
@@ -576,5 +638,4 @@ def view(event_id):
                            event_id)[0]['username']
 
         user = session.get("user_id")
-        print(user)
         return render_template("view.html", event=event, slots=slots, owner=owner, user=user)
