@@ -340,8 +340,11 @@ def edit(event_hash):
         if session.get("user_id") != event['owner_id']:
             return apology("Sorry, you don't own this event!")
 
+        # get the slots
+        slots = db.execute("SELECT * FROM slots WHERE event_id = ?", event['id'])
+
         # show the edit page for that event
-        return render_template("edit.html", event=event)
+        return render_template("edit.html", event=event, slots=slots)
 
     if request.method == "POST":
 
