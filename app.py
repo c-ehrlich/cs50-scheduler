@@ -265,27 +265,39 @@ def create_slots():
 @login_required
 def created():
     if request.method == "GET":
-        # Get list of meetings created by the active user
+
+        # Get today's daye
+        today = date.today().strftime("%Y-%m-%d")
+
+        # Get list of today & future meetings created by the active user
         meetings = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
-                              "WHERE users.id = ?",
-                              session.get("user_id"))
+                              "WHERE users.id = ? " +
+                              "AND events.date >= ? " +
+                              "ORDER BY events.date ASC",
+                              session.get("user_id"), today)
+
+        # Get list of past meetings created by the active user
+        pastmeet = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
+                              "JOIN users ON events.owner_id = users.id " +
+                              "WHERE users.id = ? " +
+                              "AND events.date < ? " +
+                              "ORDER BY events.date DESC",
+                              session.get("user_id"), today)
         
         # Add information about free, full, and total slots to the meeting dictionary
-        for meeting in meetings:
+        # Also Add information about meeting start time to the meetings
+        for meeting in meetings + pastmeet:
             meeting['slots_total'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ?", 
                                                 meeting['id'])[0]['COUNT(*)']
             meeting['slots_empty'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ? AND user_id = 0",
                                                 meeting['id'])[0]['COUNT(*)']            
             meeting['slots_full'] = meeting['slots_total'] - meeting['slots_empty']
-
-        # Add information about meeting start time to the meetings
-        for meeting in meetings:
             meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
             meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
 
         # Show the selected meetings
-        return render_template("created.html", meetings=meetings)
+        return render_template("created.html", meetings=meetings, pastmeet=pastmeet)
 
     else:
         return apology("No PUSH route exists yet for /created")
@@ -393,7 +405,7 @@ def joined():
         for meeting in pastmeet:
             meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
             meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
-            
+
         return render_template("joined.html", meetings=meetings, pastmeet=pastmeet)
 
     else:
