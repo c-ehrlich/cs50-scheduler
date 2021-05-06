@@ -343,6 +343,10 @@ def edit(event_hash):
         # get the slots
         slots = db.execute("SELECT * FROM slots WHERE event_id = ?", event['id'])
 
+        # calculate event start and end times
+        event['time_meeting_start'] = get_start_time(db, event['hash'])
+        event['time_meeting_end'] = get_end_time(db, event['hash'])
+
         # show the edit page for that event
         return render_template("edit.html", event=event, slots=slots)
 
@@ -613,6 +617,74 @@ def remove(meeting, user):
         # remove the selected user from the meeting, then reload the meeting view
         leave_meeting(db, meeting, user)
         return redirect(f"/view/{meeting}")
+
+
+# /slot_add/event_hash
+# adds a new slot to the event with a specified event id
+@app.route("/slot_add/<event_hash>", methods=["POST"])
+@login_required
+def slot_add(event_hash):
+    if request.method == "POST":
+        # check that the user owns the event
+        # check that start and end are both valid times
+        # check that the slot is ok (end is after start)
+        # check that after adding this slot all the slots would still be without overlap
+
+        # if it's all good, add the slot and reload the page
+        return apology("TODO") # TKTK temp
+        return render_template("edit.html", event=event, slots=slots)
+
+
+# /slot_delete/slot_id
+# deletes the slot with the specified id
+@app.route("/slot_delete/<slot_id>", methods=["POST"])
+@login_required
+def slot_delete(slot_id):
+    if request.method == "POST":
+        event = db.execute("SELECT events.id, events.eventname, events.description, events.date, events.hash, events.owner_id "
+                           "FROM events " +
+                           "JOIN slots ON slots.event_id = events.id " +
+                           "WHERE slots.id = ?",
+                           slot_id)[0];
+
+        # make sure the user owns the event
+        if session.get("user_id") != event['owner_id']:
+            return apology("You don't own this event, bro")
+
+        # check that the slot exists & delete it
+        try:
+            db.execute("DELETE FROM slots WHERE id = ?", slot_id)
+        except:
+            return apology(f"Can't find a slot with ID {slot_id}")
+
+        # calculate event start and end times
+        event['time_meeting_start'] = get_start_time(db, event['hash'])
+        event['time_meeting_end'] = get_end_time(db, event['hash'])
+
+        # get event slots
+        slots = db.execute("SELECT * FROM slots " +
+                           "WHERE slots.event_id = ? " +
+                           "ORDER BY slots.time_start ASC", 
+                           event['id'])
+        
+        # go back to view the edit page
+        return render_template("edit.html", event=event, slots=slots)
+
+
+# /slot_edit/slot_id
+# edits the start and/or end times of a slot
+@app.route("/slot_edit/<slot_id>", methods=["POST"])
+@login_required
+def slot_edit(slot_id):
+    if request.method == "POST":
+        # check that the user owns the event that the slot belongs to
+        # check that the new start and end are both valid times
+        # chack that the slot is ok (end is after start)
+        # check that after editing this slots all the slots would still be without overlap
+
+        # if it's all good, edit the slot and reload the page
+        return apology("TODO") # TKTK temp
+        return render_template("edit.html", event=event, slots=slots)
 
 
 # /view/event_id
