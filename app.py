@@ -339,6 +339,8 @@ def edit(event_hash):
         if session.get("user_id") != event['owner_id']:
             return apology("Sorry, you don't own this event!")
 
+        print(event) #TKTK debug
+
         # show the edit page for that event
         return render_template("edit.html", event=event)
 
@@ -373,6 +375,8 @@ def edit(event_hash):
             datetime.strptime(date_input, date_format)
         except ValueError:
             return apology("Please enter a valid date")
+        except:
+            return apology("Unknown type of error in strptime")
         
         date_formatted = datetime.strptime(date_input, date_format).date()
         if date_formatted < date.today():

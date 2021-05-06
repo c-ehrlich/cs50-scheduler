@@ -18,7 +18,7 @@
         <hr>
         Scheduled by {{ owner }}
         {% if event.owner_id == user %}
-        <form action="/edit/{{ event.hash }}" method="post">
+        <form action="/edit/{{ event.hash }}" method="get">
             <input type="submit" value="Edit">
         </form>  
 
