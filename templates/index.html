@@ -8,6 +8,9 @@
     <h1>My Meetings in the next 7 days</h1>
     {% for event in events %}
         {{ event }}
+        <form action="/view/{{ event.hash }}" method="get">
+            <input type=submit value="View">
+        </form>
         <hr>
     {% endfor %}
 {% endblock %}

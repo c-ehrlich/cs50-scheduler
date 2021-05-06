@@ -14,7 +14,7 @@
         <hr>
         Description: {{ event.description }}
         <hr>
-        Schduled for: {{ event.date }}
+        Schduled for: {{ event.date }}, {{ event.time_meeting_start }} - {{ event.time_meeting_end }}
         <hr>
         Scheduled by {{ owner }}
         {% if event.owner_id == user %}

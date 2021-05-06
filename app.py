@@ -59,6 +59,7 @@ def index():
     today = date.today()
     soon = today + timedelta(days = days_to_display)
 
+    # get meeting information for front page
     events = db.execute("SELECT events.id, events.owner_id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end " +
                         "FROM events " +
                         "JOIN slots ON events.id = slots.event_id " +
@@ -67,6 +68,11 @@ def index():
                         "AND events.date >= ? AND events.date < ?"
                         "GROUP BY events.id ",
                         user, user, today, soon)
+
+    # add total start time
+    for event in events:
+            event['time_meeting_start'] = get_start_time(db, event['hash'])
+            event['time_meeting_end'] = get_end_time(db, event['hash'])
 
     return render_template("index.html", events=events)
 
@@ -522,6 +528,10 @@ def remove(meeting, user):
 def view(event_id):
     if request.method == "GET":
         event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)[0]
+
+        event['time_meeting_start'] = get_start_time(db, event['hash'])
+        event['time_meeting_end'] = get_end_time(db, event['hash'])
+
         slots = db.execute("SELECT * FROM slots " +
                            # "JOIN users ON slots.user_id = users.id " +
                            "WHERE slots.event_id = ?", 
