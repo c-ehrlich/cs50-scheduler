@@ -14,7 +14,7 @@
         <hr>
         Description: {{ event.description }}
         <hr>
-        Schduled for: {{ event.date }}, {{ event.time_meeting_start }} - {{ event.time_meeting_end }}
+        Schduled for: {{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}
         <hr>
         Scheduled by {{ owner }}
         {% if event.owner_id == user %}
@@ -34,13 +34,13 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete Meeting</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Delete event</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete the meeting "{{ event.eventname }}" on {{ event.date }}?
+                        Are you sure you want to delete the event "{{ event.eventname }}" on {{ event.date }}?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # new helper functions
-from helpers import delete_meeting, join_meeting, leave_meeting, verify_slots, get_start_time, get_end_time
+from helpers import delete_event, join_event, leave_event, verify_slots, get_start_time, get_end_time
 
 # Configure application
 app = Flask(__name__)
@@ -59,7 +59,7 @@ def index():
     today = date.today()
     soon = today + timedelta(days = days_to_display)
 
-    # get meeting information for front page
+    # get event information for front page
     events = db.execute("SELECT events.id, events.owner_id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end " +
                         "FROM events " +
                         "JOIN slots ON events.id = slots.event_id " +
@@ -72,8 +72,8 @@ def index():
 
     # add total start time
     for event in events:
-            event['time_meeting_start'] = get_start_time(db, event['hash'])
-            event['time_meeting_end'] = get_end_time(db, event['hash'])
+            event['time_event_start'] = get_start_time(db, event['hash'])
+            event['time_event_end'] = get_end_time(db, event['hash'])
 
     return render_template("index.html", events=events)
 
@@ -162,7 +162,7 @@ def create():
         date_formatted = datetime.strptime(date_string, date_format).date()
         print(f"{date_formatted} | {date.today()}")
         if date_formatted < date.today():
-            return apology("Please don't try to schedule a meeting in the past. That's rude!")
+            return apology("Please don't try to schedule a event in the past. That's rude!")
 
         # Make sure that the number of slots is an integer between 1 and 50
         slots = request.form.get("num_slots")
@@ -234,7 +234,7 @@ def create_slots():
             except ValueError:
                 # delete the event
                 event_id = db.execute("SELECT event_id FROM slots WHERE id = ?", index)[0]['event_id']
-                delete_meeting(db, event_id, session.get("user_id"))
+                delete_event(db, event_id, session.get("user_id"))
                 return apology("Please submit valid times for all slots")
             
             # Update the slot start and end times in the database
@@ -259,7 +259,7 @@ def create_slots():
 
 
 # /created
-# shows all meetings created by the active user
+# shows all events created by the active user
 @app.route("/created")
 @login_required
 def created():
@@ -268,15 +268,15 @@ def created():
         # Get today's daye
         today = date.today().strftime("%Y-%m-%d")
 
-        # Get list of today & future meetings created by the active user
-        meetings = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
+        # Get list of today & future events created by the active user
+        events = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
                               "WHERE users.id = ? " +
                               "AND events.date >= ? " +
                               "ORDER BY events.date ASC",
                               session.get("user_id"), today)
 
-        # Get list of past meetings created by the active user
+        # Get list of past events created by the active user
         pastmeet = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
                               "WHERE users.id = ? " +
@@ -284,19 +284,19 @@ def created():
                               "ORDER BY events.date DESC",
                               session.get("user_id"), today)
         
-        # Add information about free, full, and total slots to the meeting dictionary
-        # Also Add information about meeting start time to the meetings
-        for meeting in meetings + pastmeet:
-            meeting['slots_total'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ?", 
-                                                meeting['id'])[0]['COUNT(*)']
-            meeting['slots_empty'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ? AND user_id = 0",
-                                                meeting['id'])[0]['COUNT(*)']            
-            meeting['slots_full'] = meeting['slots_total'] - meeting['slots_empty']
-            meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
-            meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
+        # Add information about free, full, and total slots to the event dictionary
+        # Also Add information about event start time to the events
+        for event in events + pastmeet:
+            event['slots_total'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ?", 
+                                                event['id'])[0]['COUNT(*)']
+            event['slots_empty'] = db.execute("SELECT COUNT(*) FROM slots WHERE event_id = ? AND user_id = 0",
+                                                event['id'])[0]['COUNT(*)']            
+            event['slots_full'] = event['slots_total'] - event['slots_empty']
+            event['time_event_start'] = get_start_time(db, event['hash'])
+            event['time_event_end'] = get_end_time(db, event['hash'])
 
-        # Show the selected meetings
-        return render_template("created.html", meetings=meetings, pastmeet=pastmeet)
+        # Show the selected events
+        return render_template("created.html", events=events, pastmeet=pastmeet)
 
     else:
         return apology("No PUSH route exists yet for /created")
@@ -308,7 +308,7 @@ def created():
 @login_required
 def delete_from_created(event_id):
     if request.method == "POST":
-        delete_meeting(db, event_id, session.get("user_id"))
+        delete_event(db, event_id, session.get("user_id"))
         return redirect("/created")
 
 
@@ -318,7 +318,7 @@ def delete_from_created(event_id):
 @login_required
 def delete_from_view(event_id):
     if request.method == "POST":
-        delete_meeting(db, event_id, session.get("user_id"))
+        delete_event(db, event_id, session.get("user_id"))
         return redirect("/")
 
 
@@ -344,8 +344,8 @@ def edit(event_hash):
         slots = db.execute("SELECT * FROM slots WHERE event_id = ? ORDER BY time_start ASC", event['id'])
 
         # calculate event start and end times
-        event['time_meeting_start'] = get_start_time(db, event['hash'])
-        event['time_meeting_end'] = get_end_time(db, event['hash'])
+        event['time_event_start'] = get_start_time(db, event['hash'])
+        event['time_event_end'] = get_end_time(db, event['hash'])
 
         # show the edit page for that event
         return render_template("edit.html", event=event, slots=slots)
@@ -386,7 +386,7 @@ def edit(event_hash):
         
         date_formatted = datetime.strptime(date_input, date_format).date()
         if date_formatted < date.today():
-            return apology("Please don't try to schedule a meeting in the past. That's rude!")
+            return apology("Please don't try to schedule a event in the past. That's rude!")
 
         # update event & prepare to feed it to return function
         db.execute("UPDATE events SET eventname = ?, description = ?, date = ? WHERE hash = ?",
@@ -406,7 +406,7 @@ def home():
 
 
 # /join
-# prompts the user for a meeting hash, then redirects to join the meeting with that hash
+# prompts the user for a event hash, then redirects to join the event with that hash
 @app.route("/join", methods=["GET", "POST"])
 @login_required
 def join_id():
@@ -426,7 +426,7 @@ def join_id():
 
 
 # /join/hash/slot
-# User attempts to join a certain slot of a meeting
+# User attempts to join a certain slot of a event
 # If they don't have a slot yet, it will give them that slot
 # If they already have a slot, it will switch them to that slot
 @app.route("/join/<event_hash>/<event_slot>", methods=["POST"])
@@ -435,13 +435,13 @@ def join_slot(event_hash, event_slot):
     if request.method == "POST":
         user = session.get("user_id")
 
-        # don't need to sanitize input here because the join_meeting function does it
-        join_meeting(db, event_hash, event_slot, user)
+        # don't need to sanitize input here because the join_event function does it
+        join_event(db, event_hash, event_slot, user)
         return redirect(f"/view/{event_hash}")
 
 
 # /joined
-# shows all meetings joined by the active user
+# shows all events joined by the active user
 @app.route("/joined")
 @login_required
 def joined():
@@ -450,8 +450,8 @@ def joined():
         # get today's date
         today = date.today().strftime("%Y-%m-%d")
 
-        # get today & future meetings
-        meetings = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
+        # get today & future events
+        events = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
                               "JOIN slots ON events.id = slots.event_id " +
                               "JOIN users ON slots.user_id = users.id " +
                               "WHERE users.id = ? " +
@@ -459,7 +459,7 @@ def joined():
                               "ORDER BY events.date ASC",
                               session.get("user_id"), today)
 
-        # get past meetings
+        # get past events
         pastmeet = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date, slots.time_start, slots.time_end FROM events " +
                               "JOIN slots ON events.id = slots.event_id " +
                               "JOIN users ON slots.user_id = users.id " +
@@ -468,24 +468,24 @@ def joined():
                               "ORDER BY events.date DESC",
                               session.get("user_id"), today)
 
-         # Add information about meeting start time and meeting end time to meetings and pastmeets
-        for meeting in meetings + pastmeet:
-            meeting['time_meeting_start'] = get_start_time(db, meeting['hash'])
-            meeting['time_meeting_end'] = get_end_time(db, meeting['hash'])
+         # Add information about event start time and event end time to events and pastmeets
+        for event in events + pastmeet:
+            event['time_event_start'] = get_start_time(db, event['hash'])
+            event['time_event_end'] = get_end_time(db, event['hash'])
 
-        return render_template("joined.html", meetings=meetings, pastmeet=pastmeet)
+        return render_template("joined.html", events=events, pastmeet=pastmeet)
 
     else:
         return apology("No PUSH route exists yet for /joined")
 
 
 # /leave/event_hash
-# makes a user leave a meeting with a certain hash
+# makes a user leave a event with a certain hash
 @app.route("/leave/<event_hash>", methods=["POST"])
 @login_required
 def leave(event_hash):
     if request.method == "POST":
-        leave_meeting(db, event_hash, session.get("user_id"))
+        leave_event(db, event_hash, session.get("user_id"))
         return redirect(f"/view/{event_hash}")
 
 
@@ -600,23 +600,23 @@ def reset_password():
 
 
 # /remove
-# removes an attendee from a meeting
-# works only if the user is the owner of the meeting
-@app.route("/remove/<meeting>/<user>", methods=["POST"])
+# removes an attendee from a event
+# works only if the user is the owner of the event
+@app.route("/remove/<event>/<user>", methods=["POST"])
 @login_required
-def remove(meeting, user):
+def remove(event, user):
     if request.method == "POST":
         
-        # Ensure that this is being attempted only by the owner of the meeting
+        # Ensure that this is being attempted only by the owner of the event
         currentuser = session.get("user_id")
-        owner = db.execute("SELECT owner_id FROM events WHERE hash = ?", meeting)[0]['owner_id']
+        owner = db.execute("SELECT owner_id FROM events WHERE hash = ?", event)[0]['owner_id']
         print(f"Current: {currentuser} Owner: {owner}")
         if currentuser != owner:
             return apology("Only the owner of an event can cancel other people's appointments")
 
-        # remove the selected user from the meeting, then reload the meeting view
-        leave_meeting(db, meeting, user)
-        return redirect(f"/view/{meeting}")
+        # remove the selected user from the event, then reload the event view
+        leave_event(db, event, user)
+        return redirect(f"/view/{event}")
 
 
 # /slot_add/event_hash
@@ -697,8 +697,8 @@ def slot_delete(slot_id):
             return apology(f"Can't find a slot with ID {slot_id}")
 
         # calculate event start and end times
-        event['time_meeting_start'] = get_start_time(db, event['hash'])
-        event['time_meeting_end'] = get_end_time(db, event['hash'])
+        event['time_event_start'] = get_start_time(db, event['hash'])
+        event['time_event_end'] = get_end_time(db, event['hash'])
 
         # get event slots
         slots = db.execute("SELECT * FROM slots " +
@@ -785,8 +785,8 @@ def view(event_id):
     if request.method == "GET":
         event = db.execute("SELECT * FROM events WHERE hash = ?", event_id)[0]
 
-        event['time_meeting_start'] = get_start_time(db, event['hash'])
-        event['time_meeting_end'] = get_end_time(db, event['hash'])
+        event['time_event_start'] = get_start_time(db, event['hash'])
+        event['time_event_end'] = get_end_time(db, event['hash'])
 
         slots = db.execute("SELECT * FROM slots " +
                            "WHERE slots.event_id = ? " +

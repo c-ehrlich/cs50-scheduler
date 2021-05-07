@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <h1>My Meetings in the next 7 days</h1>
+    <h1>My events in the next 7 days</h1>
     {% for event in events %}
         {{ event }}
         <form action="/view/{{ event.hash }}" method="get">

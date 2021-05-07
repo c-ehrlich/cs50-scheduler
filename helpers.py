@@ -23,11 +23,11 @@ def apology(message, code=400):
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
-def delete_meeting(db, event_id, user_id):
+def delete_event(db, event_id, user_id):
     """
-    Deletes a meeting and all slots associated with it
+    Deletes a event and all slots associated with it
     (!) This uses event_id instead of event_hash, because id is not user-facing
-    Works only if the user is the owner of the meeting
+    Works only if the user is the owner of the event
     """
 
     # Make sure the user trying to delete the event actually owns it
@@ -38,8 +38,6 @@ def delete_meeting(db, event_id, user_id):
     if (db.execute("SELECT COUNT(*) FROM events WHERE id = ?", event_id)[0]['COUNT(*)']) != 1:
         return apology(f"Could not find an event with hash {event_id}")
 
-    print(f"deleting event {event_id}")
-
     # Delete all slots associated with this event
     db.execute("DELETE FROM slots WHERE event_id = ?", event_id)
 
@@ -47,10 +45,10 @@ def delete_meeting(db, event_id, user_id):
     db.execute("DELETE FROM events WHERE id = ?", event_id)
     
 
-def join_meeting(db, event_hash, slot_id, user_id):
+def join_event(db, event_hash, slot_id, user_id):
     """
-    Makes a user join a meeting.
-    Will remove them from any other slots they are occupying in the current meeting
+    Makes a user join a event.
+    Will remove them from any other slots they are occupying in the current event
     Will apologize on bad input
     """
 
@@ -73,7 +71,7 @@ def join_meeting(db, event_hash, slot_id, user_id):
     # Make sure the user doesn't own this event
     # This should also be implemented in the HTML of any event view etc, but doing it here to be sure ^_^
     if user_id == db.execute("SELECT owner_id FROM events WHERE hash = ?", event_hash)[0]['owner_id']:
-        return apology("You can't join your own meeting!")
+        return apology("You can't join your own event!")
 
     # Remove user from any slots in this event they may already be occupying
     db.execute("UPDATE slots      "
@@ -89,10 +87,10 @@ def join_meeting(db, event_hash, slot_id, user_id):
     db.execute("UPDATE slots SET user_id = ? WHERE id = ?", user_id, slot_id)
 
 
-def leave_meeting(db, event_hash, user_id):
+def leave_event(db, event_hash, user_id):
     """
-    Makes a user leave the meeting
-    Will remove them from any slots they are occupying in the meeting
+    Makes a user leave the event
+    Will remove them from any slots they are occupying in the event
     Will apologize on bad input
     """
     # Make sure the event exists
@@ -112,7 +110,7 @@ def leave_meeting(db, event_hash, user_id):
 
 def get_end_time(db, event_hash):
     """
-    Returns the end time of a meeting
+    Returns the end time of a event
     """
     event_id = db.execute("SELECT id FROM events WHERE hash = ?", event_hash)[0]['id']
     try:
@@ -124,7 +122,7 @@ def get_end_time(db, event_hash):
 
 def get_start_time(db, event_hash):
     """
-    Returns the start time of a meeting
+    Returns the start time of a event
     """
     event_id = db.execute("SELECT id FROM events WHERE hash = ?", event_hash)[0]['id']
     try:

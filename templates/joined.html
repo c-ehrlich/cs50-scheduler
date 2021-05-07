@@ -1,34 +1,34 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Joined Meetings
+    Joined events
 {% endblock %}
 
 {% block main %}
-    <h3>Future Meetings</h3>
-    {% for meeting in meetings %}
+    <h3>Future events</h3>
+    {% for event in events %}
         <div class="event-main">
-            <p>{{ meeting.hash }}</p>
-            <p>{{ meeting.eventname }}</p>
-            <p>{{ meeting.date }}</p>
-            <p>{{ meeting.description }}</p>
-            <p>Your Slot: {{ meeting.time_start }} - {{ meeting.time_end }}</p>
-            <p>Meeting: {{ meeting.time_meeting_start }} - {{ meeting.time_meeting_end }}</p>
-            <form action="/view/{{ meeting.hash }}" method="get">
+            <p>{{ event.hash }}</p>
+            <p>{{ event.eventname }}</p>
+            <p>{{ event.date }}</p>
+            <p>{{ event.description }}</p>
+            <p>Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
+            <p>event: {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+            <form action="/view/{{ event.hash }}" method="get">
                 <input type=submit value="View">
             </form>
         </div>
     {% endfor %}
-    <h3>Past Meetings</h3>
-    {% for meeting in pastmeet %}
+    <h3>Past events</h3>
+    {% for event in pastmeet %}
         <div class="event-main">
-            <p>{{ meeting.hash }}</p>
-            <p>{{ meeting.eventname }}</p>
-            <p>{{ meeting.date }}</p>
-            <p>{{ meeting.description }}</p>
-            <p>Your Slot: {{ meeting.time_start }} - {{ meeting.time_end }}</p>
-            <p>Meeting: {{ meeting.time_meeting_start }} - {{ meeting.time_meeting_end }}</p>
-            <form action="/view/{{ meeting.hash }}" method="get">
+            <p>{{ event.hash }}</p>
+            <p>{{ event.eventname }}</p>
+            <p>{{ event.date }}</p>
+            <p>{{ event.description }}</p>
+            <p>Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
+            <p>event: {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+            <form action="/view/{{ event.hash }}" method="get">
                 <input type=submit value="View">
             </form>
         </div>
