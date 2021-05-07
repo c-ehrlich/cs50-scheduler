@@ -656,9 +656,6 @@ def slot_add(event_hash):
                     slot_start, slot_end, event['id'], 0)
 
         # get the rowid of the inserted value (so that we can delete it if it's not good)
-        # print(type(db.execute("SELECT last_insert_rowid()"))) #TKTK DEBUG
-        # print(db.execute("SELECT last_insert_rowid()")[0])
-        # print(db.execute("SELECT last_insert_rowid()")[0]["last_insert_rowid()"])
         rowid = int((db.execute("SELECT last_insert_rowid()")[0]["last_insert_rowid()"]))
 
         # get a list of dictionaries containing start and end times of ALL the slots for this event
@@ -708,6 +705,14 @@ def slot_delete(slot_id):
                            "WHERE slots.event_id = ? " +
                            "ORDER BY slots.time_start ASC", 
                            event['id'])
+
+        # run verify slots
+        # it returns a string, "" means we're all good
+        # if we're not all good, then delete the slot we just created, then throw an error
+        verify = verify_slots(slots)
+        if verify != "":
+            db.execute("DELETE FROM slots WHERE id = ?", rowid)
+            return apology(verify)
         
         # go back to view the edit page
         return render_template("edit.html", event=event, slots=slots)
@@ -719,14 +724,55 @@ def slot_delete(slot_id):
 @login_required
 def slot_edit(slot_id):
     if request.method == "POST":
-        # check that the user owns the event that the slot belongs to
+        event = db.execute("SELECT events.id, events.eventname, events.description, events.date, events.hash, events.owner_id "
+                           "FROM events " +
+                           "JOIN slots ON slots.event_id = events.id " +
+                           "WHERE slots.id = ?",
+                           slot_id)[0];
+
+        print(event)
+
+        # make sure the user owns the event
+        if session.get("user_id") != event['owner_id']:
+            return apology("You don't own this event :(")
+
+        # check that the slot exists & put it in a variable
+        try:
+            slot = db.execute("SELECT * FROM slots WHERE id = ?", slot_id)[0]
+        except:
+            return apology(f"Can't find a slot with ID {slot_id}")
+
         # check that the new start and end are both valid times
+        new_time_start = request.form.get(f"{slot_id}.time_start")
+        new_time_end = request.form.get(f"{slot_id}.time_end")
+
+        if new_time_start >= new_time_end:
+            return error("slots have to end AFTER they start!")
+
+        # create a slot var that has start and end times for all the slots EXCEPT the one we're editing
+        slots = db.execute("SELECT * FROM slots WHERE event_id = ? " +
+                           "EXCEPT SELECT * FROM slots WHERE id = ? " +
+                           "ORDER BY time_start ASC", event['id'], slot_id)
+
         # chack that the slot is ok (end is after start)
+        slots.append({'time_start': new_time_start, 'time_end': new_time_end})
+
         # check that after editing this slots all the slots would still be without overlap
+        # run verify slots
+        # it returns a string, "" means we're all good
+        # if we're not all good, then delete the slot we just created, then throw an error
+        verify = verify_slots(slots)
+        if verify != "":
+            return apology(verify)
+        else:
+            db.execute("UPDATE slots SET time_start = ?, time_end = ? " +
+                       "WHERE id = ?", new_time_start, new_time_end, slot_id)
+
+        # get an ordered list of slots to return to the render template
+        slots = db.execute("SELECT * FROM slots WHERE event_id = ? ORDER BY time_start ASC", event['id'])
 
         # if it's all good, edit the slot and reload the page
-        return apology("TODO") # TKTK temp
-        return render_template("edit.html", event=event, slots=slots)
+        return render_template("edit.html", event=event, slots=slots) # TK BE SURE TO SORT SLOTS
 
 
 # /view/event_id

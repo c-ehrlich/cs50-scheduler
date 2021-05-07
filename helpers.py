@@ -10,7 +10,6 @@ from cs50 import SQL
 
 def apology(message, code=400):
     """Render message as an apology to user."""
-    print("Rendering Apology") #TKTK debug delete this line
     def escape(s):
         """
         Escape special characters.
@@ -158,7 +157,6 @@ def verify_slots(slots):
 
     # Make sure none of the slots overlap
     for i in range(1, len(slots)):
-        print(f"checking overlap {i}")
         if slots[i]['time_start'] < slots[i-1]['time_end']:
             return "Slot times can't overlap!"
 
