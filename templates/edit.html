@@ -35,4 +35,9 @@
         <input type="time" name="slot_end">
         <button class="btn btn-secondary" type="submit">Create New Slot</button>
     </form>
+
+    <hr>
+    <form action="/view/{{ event.hash }}" method="get">
+        <input type=submit value="Back">
+    </form>
 {% endblock %}
