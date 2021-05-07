@@ -21,13 +21,14 @@
             <input type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
             <button class="btn btn-secondary" type="submit">Submit Changes</button>
         </form>
+        <!-- TKTK switch delete to a modal later! -->
         <form action="/slot_delete/{{ slot.id }}" method="post">
             <input type=submit class="btn btn-secondary" value="Delete Slot">
         </form>
         <hr>
     {% endfor %}
     <h3>Add Slot</h3>
-    <form action="slot_add" method="post">
+    <form action="/slot_add/{{ event.hash }}" method="post">
         <label for="slot_start">Start Time</label>
         <input type="time" name="slot_start">
         <label for="slot_end">End Time</label>

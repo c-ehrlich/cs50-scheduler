@@ -341,7 +341,7 @@ def edit(event_hash):
             return apology("Sorry, you don't own this event!")
 
         # get the slots
-        slots = db.execute("SELECT * FROM slots WHERE event_id = ?", event['id'])
+        slots = db.execute("SELECT * FROM slots WHERE event_id = ? ORDER BY time_start ASC", event['id'])
 
         # calculate event start and end times
         event['time_meeting_start'] = get_start_time(db, event['hash'])
@@ -625,13 +625,55 @@ def remove(meeting, user):
 @login_required
 def slot_add(event_hash):
     if request.method == "POST":
+        event = db.execute("SELECT id, eventname, description, date, hash, owner_id "
+                           "FROM events WHERE hash = ?",
+                           event_hash)[0];
+
         # check that the user owns the event
+        if session.get("user_id") != event['owner_id']:
+            return apology("You don't own this event :(")
+
+        # get the new slot info and save it to some vars
+        slot_start = request.form.get("slot_start")
+        slot_end = request.form.get("slot_end")    
         # check that start and end are both valid times
-        # check that the slot is ok (end is after start)
+        date_format = "%H:%M"
+        try:
+            datetime.strptime(slot_start, date_format)
+            datetime.strptime(slot_end, date_format)
+        except ValueError:
+            return apology("strptime didn't like your formatting - ValueError")
+        except:
+            return apology("strptime didn't like your formatting - Some other kind of error")
+
+        # check end is after start
+        if slot_start >= slot_end:
+            return apology("Slot needs to end AFTER it starts!")
+
         # check that after adding this slot all the slots would still be without overlap
+        # insert the row
+        db.execute("INSERT INTO slots (time_start, time_end, event_id, user_id) VALUES (?, ?, ?, ?)",
+                    slot_start, slot_end, event['id'], 0)
+
+        # get the rowid of the inserted value (so that we can delete it if it's not good)
+        # print(type(db.execute("SELECT last_insert_rowid()"))) #TKTK DEBUG
+        # print(db.execute("SELECT last_insert_rowid()")[0])
+        # print(db.execute("SELECT last_insert_rowid()")[0]["last_insert_rowid()"])
+        rowid = int((db.execute("SELECT last_insert_rowid()")[0]["last_insert_rowid()"]))
+
+        # get a list of dictionaries containing start and end times of ALL the slots for this event
+        slots = db.execute("SELECT time_start, time_end FROM slots WHERE event_id = ? ORDER BY time_start ASC",
+                            event['id'])
+
+        # run verify slots
+        # it returns a string, "" means we're all good
+        # if we're not all good, then delete the slot we just created, then throw an error
+        verify = verify_slots(slots)
+        if verify != "":
+            db.execute("DELETE FROM slots WHERE id = ?", rowid)
+            return apology(verify)
 
         # if it's all good, add the slot and reload the page
-        return apology("TODO") # TKTK temp
         return render_template("edit.html", event=event, slots=slots)
 
 
@@ -649,7 +691,7 @@ def slot_delete(slot_id):
 
         # make sure the user owns the event
         if session.get("user_id") != event['owner_id']:
-            return apology("You don't own this event, bro")
+            return apology("You don't own this event :(")
 
         # check that the slot exists & delete it
         try:
