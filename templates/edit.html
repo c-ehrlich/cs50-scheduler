@@ -8,10 +8,9 @@
     <h3>Event</h3>
     <!-- {{ event }} -->
         <form class="edit-event-grid" action="/edit/{{ event.hash }}" method="post">
-            <input autocomplete="off" class="input-loud1 form-control edit-grid-title" name="name" value="{{ event.eventname }}" type="text">
-            <textarea class="input-loud1 form-control edit-grid-description" name="description" rows="4">{{ event.description }}</textarea>
-            <!-- <input autocomplete="off" class="input-loud1 form-control edit-grid-description" name="description" value="{{ event.description }}" type="textarea"> -->
-            <input autocomplete="off" class="input-loud1 form-control edit-grid-date" name="date" value="{{ event.date }}" type="date">
+            <input autocomplete="off" class="input-loud1 edit-grid-title" name="name" value="{{ event.eventname }}" type="text">
+            <textarea class="input-loud1 edit-grid-description" name="description" rows="4">{{ event.description }}</textarea>
+            <input autocomplete="off" class="input-loud1 edit-grid-date" name="date" value="{{ event.date }}" type="date">
             <button class="button-loud1 edit-grid-submit" type="submit">Submit</button>
         </form>
     <hr>
@@ -21,13 +20,23 @@
         <form class="edit-slots-grid" action="/slot_edit/{{ slot.id }}" method="post">
             <input class="edit-slots-time-start" type="time" name="{{ slot.id }}.time_start" value="{{ slot.time_start }}">
             <input class="edit-slots-time-end" type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
-            <div id="edit-slots-delete"></div>
+            <!-- move into here -->
+            <div id="edit-slots-delete" id="{{ slot.id }}-delete-insert"></div>
             <button class="button-loud1 edit-slots-submit" type="submit">Submit</button>
         </form>
-        <form action="/slot_delete/{{ slot.id }}" method="post">
-            <input type=submit class="button-delete1" value="Delete">
-        </form>
+        <!-- move from here -->
+        <div id="{{ slot.id }}-delete-source">
+            <form action="/slot_delete/{{ slot.id }}" method="post">
+                <input type=submit class="button-delete1" value="Delete">
+            </form>
+        </div>
         <hr>
+        <!-- code that should do the moving -->
+        <script>
+            document.getElementById('{{ slot.id }}-delete-insert').appendChild(
+                document.getElementById('{{ slot.id }}-delete-source')
+            );
+        </script>
     {% endfor %}
     <h3>Add Slot</h3>
     <form action="/slot_add/{{ event.hash }}" method="post">
