@@ -56,7 +56,11 @@
 }
 
 .create-slot {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+}
+
+.slot-times {
+    display: flex;
 }
 
 .start-time {
@@ -64,4 +68,8 @@
 }
 .end-time {
     margin-left: 8px;
+}
+
+.start-time, .end-time {
+    flex-basis: 50%;
 }
