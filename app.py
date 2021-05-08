@@ -269,7 +269,7 @@ def created():
         today = date.today().strftime("%Y-%m-%d")
 
         # Get list of today & future events created by the active user
-        events = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
+        events = db.execute("SELECT events.id, users.username, events.eventname, events.description, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
                               "WHERE users.id = ? " +
                               "AND events.date >= ? " +
@@ -393,7 +393,9 @@ def edit(event_hash):
                    name, description, date_input, event['hash'])
         event = db.execute("SELECT * FROM events WHERE hash = ?", event_hash)[0]
 
-        return render_template("edit.html", event=event)
+        slots = db.execute("SELECT * FROM slots WHERE event_id = ? ORDER BY time_start ASC", event['id'])
+
+        return render_template("edit.html", event=event, slots=slots)
 
 # /home
 # returns the user to the index page after completing some action

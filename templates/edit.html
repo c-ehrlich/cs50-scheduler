@@ -6,23 +6,26 @@
 
 {% block main %}
     <h3>Event</h3>
-    {{ event }}
-    <form action="/edit/{{ event.hash }}" method="post">
-        <input autocomplete="off" class="form-control" name="name" value="{{ event.eventname }}" type="text">
-        <input autocomplete="off" class="form-control" name="description" value="{{ event.description }}" type="text">
-        <input autocomplete="off" class="form-control" name="date" value="{{ event.date }}" type="date">
-        <button class="btn btn-primary" type="submit">Submit Changes</button>
-    </form>
+    <!-- {{ event }} -->
+        <form class="edit-event-grid" action="/edit/{{ event.hash }}" method="post">
+            <input autocomplete="off" class="input-loud1 form-control edit-grid-title" name="name" value="{{ event.eventname }}" type="text">
+            <textarea class="input-loud1 form-control edit-grid-description" name="description" rows="4">{{ event.description }}</textarea>
+            <!-- <input autocomplete="off" class="input-loud1 form-control edit-grid-description" name="description" value="{{ event.description }}" type="textarea"> -->
+            <input autocomplete="off" class="input-loud1 form-control edit-grid-date" name="date" value="{{ event.date }}" type="date">
+            <button class="button-loud1 edit-grid-submit" type="submit">Submit</button>
+        </form>
+    <hr>
     <h3>Slots</h3>
     {% for slot in slots %}
-        {{ slot }}
-        <form action="/slot_edit/{{ slot.id }}" method="post">
-            <input type="time" name="{{ slot.id }}.time_start" value="{{ slot.time_start }}">
-            <input type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
-            <button class="btn btn-secondary" type="submit">Submit Changes</button>
+        <!-- {{ slot }} -->
+        <form class="edit-slots-grid" action="/slot_edit/{{ slot.id }}" method="post">
+            <input class="edit-slots-time-start" type="time" name="{{ slot.id }}.time_start" value="{{ slot.time_start }}">
+            <input class="edit-slots-time-end" type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
+            <div id="edit-slots-delete"></div>
+            <button class="button-loud1 edit-slots-submit" type="submit">Submit</button>
         </form>
         <form action="/slot_delete/{{ slot.id }}" method="post">
-            <input type=submit class="btn btn-secondary" value="Delete Slot">
+            <input type=submit class="button-delete1" value="Delete">
         </form>
         <hr>
     {% endfor %}
@@ -32,11 +35,11 @@
         <input type="time" name="slot_start">
         <label for="slot_end">End Time</label>
         <input type="time" name="slot_end">
-        <button class="btn btn-secondary" type="submit">Create New Slot</button>
+        <button class="button-loud1" type="submit">Create</button>
     </form>
 
     <hr>
     <form action="/view/{{ event.hash }}" method="get">
-        <input type=submit value="Back">
+        <input type=submit class="button-loud1" value="Back">
     </form>
 {% endblock %}

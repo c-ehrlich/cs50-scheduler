@@ -56,6 +56,7 @@
     <h3>Slots</h3>
     {% for slot in slots %}
         {{ slot.id }} <!-- id is just for debugging, delete later -->
+        {{ loop.index }} <!-- This counts slots from 1 to n. maybe not necessary? -->
         {{ slot.time_start }} - {{ slot.time_end}}
         
         <!-- USER IS THE ADMIN OF THE EVENT -->

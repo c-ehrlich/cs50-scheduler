@@ -10,21 +10,26 @@
 
 {% block main %}
     <div class="center">
-        <h3>Upcoming</h3>
+        <h1 class="category-header">Upcoming</h1>
         {% if not events|length %}
             <p>No upcoming events</p>
         {% endif %}
         {% for event in events %}
             <div class="event-main">
-                <p class="event-card-hash">{{ event.hash }}</p> 
-                <h2 class="event-card-title">{{ event.eventname }}</h2>
-                <p class="event-card-time">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
-                <p>{{ event.description }}</p>
-                <p>{{ event.slots_full }} / {{ event.slots_total }} slots filled</p>
+                <div class="card-top">
+                    <p class="event-card-hash">{{ event.hash }}</p> 
+                    <h2 class="event-card-title">{{ event.eventname }}</h2>
+                    <p class="event-card-datetime">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+                    <p>{{ event.username }}</p>
+                </div>
+                <div class="card-middle">
+                    <p class="event-card-description">{{ event.description }}</p>
+                </div>
+                <p class="event-card-slots">{{ event.slots_full }} / {{ event.slots_total }} slots filled</p>
 
                 <div class="two-buttons d1">
                     <form>
-                        <button type="button" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
+                        <button type="button" class="button-quiet1 button-width1" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
                             Delete
                         </button>
                     </form>
@@ -57,7 +62,7 @@
                 
             </div>
         {% endfor %}
-        <h3>Past</h3>
+        <h1 class="category-header">Past</h1>
         {% if not pastmeet|length %}
             <p>No past events</p>
         {% endif %}

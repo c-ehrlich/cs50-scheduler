@@ -1,5 +1,5 @@
 /* FONTS */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Open+Sans:wght@400;600;700;800&family=Roboto+Slab:wght@100;200;300;400;500;600&display=swap');
 /* font-family: 'Montserrat', sans-serif;
 font-family: 'Open Sans', sans-serif; */
 
@@ -14,7 +14,12 @@ font-family: 'Open Sans', sans-serif; */
     --color-dark1: #39603D;
     --color-dark2: #3C404D;
     --color-black: #000000;
+
+    --color-red1: #FFCCCC;
+    --color-red2: #FF0000;
 }
+
+
 
 ::placeholder { /* Most modern browsers support this now. */
     color:    var(--color-light2);
@@ -80,7 +85,7 @@ h3 {
     background-color: var(--color-white);
     border: 2px solid var(--color-dark2);
     color: var(--color-dark2);
-    display: block;
+    /* display: block; */
     font-family: 'Open Sans', sans-serif;    
     font-size: 16px;
     font-weight: 700;
@@ -98,7 +103,7 @@ h3 {
     -webkit-box-shadow: 0 0 var(--color-dark2);
             box-shadow: 0 0 var(--color-dark2); } 
 
-.button-quiet1 {
+.button-quiet1, .button-delete1 {
     background-color: var(--color-light1);
     border: 2px solid var(--color-dark1);
     color: var(--color-dark1);
@@ -116,9 +121,13 @@ h3 {
     -webkit-transition: all .1s;
     transition: all .1s;
     flex-basis: 40%; } 
-.button-quiet1:hover {
+.button-quiet1:hover, .button-delete1:hover {
     -webkit-box-shadow: 0 0 var(--color-dark1);
     box-shadow: 0 0 var(--color-dark1); } 
+
+.button-delete1:hover {
+    border: 2px solid var(--color-red2);
+    background-color: var(--color-red1); }
 
 .button-width1 {
     width: 160px;
@@ -149,6 +158,39 @@ h3 {
     text-decoration: none;
     color: var(--color-dark1);
 }
+
+.edit-slots-grid {
+    display: grid;
+    /* align-items: center; */
+    justify-content: center;
+    grid-template-rows: auto;
+    grid-template-columns: 150px 150px 150px 150px;
+}
+
+.edit-slots-time-start { grid-column: 1 / 2; }
+.edit-slots-time-end { grid-column: 2 / 3; }
+.edit-slots-delete { grid-column: 3 / 4; }
+.edit-slots-submit { grid-column: 4 / 5; }
+
+.edit-event-grid {
+    display: grid;
+    justify-content: center;
+    grid-gap: 8px;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 170px 160px auto;
+    grid-template-areas:
+        "egti egti egti"
+        "egde egde egde"
+        "egda .    egsu";
+}
+
+.edit-grid-title { grid-area: egti; }
+.edit-grid-description { 
+    grid-area: egde;
+    height: 128px;
+}
+.edit-grid-date { grid-area: egda; }
+.edit-grid-submit { grid-area: egsu; }
 
 /*
  *
