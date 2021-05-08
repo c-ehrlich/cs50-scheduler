@@ -4,6 +4,10 @@
     Joined events
 {% endblock %}
 
+{% block head %}
+    <link href="/static/cards.css" rel="stylesheet">   
+{% endblock %}
+
 {% block main %}
     <h3>Future events</h3>
     {% for event in events %}
@@ -15,7 +19,7 @@
             <p>Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
             <p>event: {{ event.time_event_start }} - {{ event.time_event_end }}</p>
             <form action="/view/{{ event.hash }}" method="get">
-                <input type=submit value="View">
+                <input class="button-loud1" type=submit value="View">
             </form>
         </div>
     {% endfor %}
@@ -29,7 +33,7 @@
             <p>Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
             <p>event: {{ event.time_event_start }} - {{ event.time_event_end }}</p>
             <form action="/view/{{ event.hash }}" method="get">
-                <input type=submit value="View">
+                <input class="button-loud1" type=submit value="View">
             </form>
         </div>
     {% endfor %}
