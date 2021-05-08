@@ -1,0 +1,46 @@
+.create-event-grid {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-columns: 200px 30px 160px 60px;
+    grid-template-areas:
+        "a1 a1 a1 a1"
+        "b1 b1 b1 b1"
+        "c1 .  c2 c3"
+        "hr hr hr hr"
+        "d1 d1 d1 d1";
+}
+
+.a1 { grid-area: a1; }
+.b1 { grid-area: b1; }
+.c1 { grid-area: c1; }
+.c2 { grid-area: c2; }
+.c3 { grid-area: c3; }
+.hr { grid-area: hr; }
+.d1 { grid-area: d1; }
+
+.w400 { min-width: 450px; }
+
+.b1-box {
+    height: 100px;
+}
+
+.c1, .c2, .c3 { 
+    vertical-align: middle;
+    line-height: 16px;
+    margin-bottom: 0;
+    
+}
+
+.c1 {
+    width: 200px;
+    max-width: 200px;
+    display: flex;
+    justify-content: left;
+}
+
+.c2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

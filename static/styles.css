@@ -52,7 +52,7 @@ main img
     max-width: 100%;
 }
 
-a, p {
+a, p, label {
     font-family: 'Montserrat', sans-serif;
     color: var(--color-dark2);
     font-weight: 500; }
@@ -68,6 +68,8 @@ h3 {
     color: var(--color-dark1); }
 .text-quiet:hover {
     color: var(--color-dark1); }
+.text-normal {
+    color: var(--color-light2); }
 
 .event-main {
     max-width: 600px;
