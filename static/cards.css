@@ -13,10 +13,24 @@
     min-width: 600px;
     background-color: #EDEFEA;
     border: 2px solid var(--color-dark1);
-    padding: 8px;
+    padding: 16px;
     margin-bottom: 48px; 
     box-shadow: 0px 0px 12px 5px rgba(50, 50, 50, 0.25);
     /*box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.25);*/
+    display: grid;
 }
 
-    
+.event-card-hash {
+    color: var(--color-light2);
+    text-align: left;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.event-card-title {
+    color: var(--color-dark2);
+    /* text-align: left; */
+    margin-top: 0;
+    font-family: "Montserrat";
+    font-weight: 600;
+}
