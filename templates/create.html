@@ -7,18 +7,22 @@
 {% block main %}
     <form action="/create" method="post">
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Event Name" type="text">
+            <input autocomplete="off" autofocus class="input-loud1" name="name" placeholder="Event Name" type="text">
         </div>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="description" placeholder="Event Description" type="text">
+            <input autocomplete="off" autofocus class="input-loud1" name="description" placeholder="Event Description" type="text">
         </div>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="date" placeholder="" type="date">
+            <input autocomplete="off" autofocus class="input-loud1" name="date" placeholder="" type="date" required>
         </div>
         <label for="num_slots">Number of slots</label>
         <input type="number" name="num_slots" min="1" max="50">
         <hr>
-        <a href="/">Cancel</a>        
-        <button class="btn btn-primary" type="submit">Create</button>
+        <div class="two-buttons">
+            <div class="row">
+                <a class="button-quiet1 button-width1 button-link-quiet1" href="/">Cancel</a>        
+                <button class="button-loud1 button-width1" type="submit">Create</button>        
+            </div>
+        </div>
     </form>
 {% endblock %}

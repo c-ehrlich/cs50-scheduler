@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block main %}
+    <h3>Welcome to Scheduler</h3>
     <form action="/login" method="post">
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="email">
+            <input autocomplete="off" autofocus class="input-loud1" name="email" placeholder="Email" type="email">
         </div>
         <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password">
+            <input class="input-loud1" name="password" placeholder="Password" type="password">
         </div>
-        <button class="btn btn-primary" type="submit">Log In</button>
+        <button class="button-loud1" type="submit">Log In</button>
     </form>
-    Forgot your password?
+    <hr>
+    <p class="text-quiet">Forgot your password?</p>
     <form action="/reset_password" method="get">
-        <button class="btn btn-secondary" type="submit">Reset Password</button>
+        <button class="button-quiet1" type="submit">Reset Password</button>
     </form>
 {% endblock %}

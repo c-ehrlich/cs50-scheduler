@@ -1,8 +1,32 @@
+/* FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap');
+/* font-family: 'Montserrat', sans-serif;
+font-family: 'Open Sans', sans-serif; */
+
+/* TKTK DEBUG */
+/* * { border: 1px solid red; } */
+
+:root{
+    --color-white: #FFFFFF;
+    --color-light1: #DADED4;
+    --color-light2: #A3BCB6;
+    --color-dark1: #39603D;
+    --color-dark2: #3C404D;
+    --color-black: #000000;
+}
+
+::placeholder { /* Most modern browsers support this now. */
+    color:    var(--color-light2);
+ }
+
 nav .navbar-brand
 {
     /* size for brand */
     font-size: xx-large;
 }
+
+body {
+    background-color: var(--color-light1); }
 
 main .form-control
 {
@@ -28,6 +52,124 @@ main img
     max-width: 100%;
 }
 
+a, p {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-dark2);
+    font-weight: 500; }
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--color-dark2);
+    padding-bottom: 16px;
+}
+
+.text-quiet {
+    color: var(--color-dark1); }
+.text-quiet:hover {
+    color: var(--color-dark1); }
+
+.event-main {
+    max-width: 600px;
+    background-color: #dddddd;
+    border: 1px solid #444444;
+    padding: 8px;
+    margin-bottom: 8px; }
+
+.button-loud1 {
+    background-color: var(--color-white);
+    border: 2px solid var(--color-dark2);
+    color: var(--color-dark2);
+    display: block;
+    font-family: 'Open Sans', sans-serif;    
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: .75px;
+    padding: 10px;
+    text-align: center;
+    margin: 8px auto;
+    -webkit-box-shadow: 3px 3px var(--color-dark2);
+            box-shadow: 3px 3px var(--color-dark2);
+    -webkit-transition: all .1s;
+    transition: all .1s;
+    /*flex-basis: 40%;*/ } 
+.button-loud1:hover {
+    -webkit-box-shadow: 0 0 var(--color-dark2);
+            box-shadow: 0 0 var(--color-dark2); } 
+
+.button-quiet1 {
+    background-color: var(--color-light1);
+    border: 2px solid var(--color-dark1);
+    color: var(--color-dark1);
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: .75px;
+    padding: 10px;
+    text-align: center;
+    margin: 8px auto;
+    -webkit-box-shadow: 3px 3px var(--color-dark1);
+            box-shadow: 3px 3px var(--color-dark1);
+    -webkit-transition: all .1s;
+    transition: all .1s;
+    flex-basis: 40%; } 
+.button-quiet1:hover {
+    -webkit-box-shadow: 0 0 var(--color-dark1);
+    box-shadow: 0 0 var(--color-dark1); } 
+
+.button-width1 {
+    width: 160px;
+    min-width: 160px;
+    max-width: 160px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.input-loud1 {
+    font-family: 'Monsterrat', sans-serif;
+    background-color: var(--color-white);
+    color: var(--color-dark1);
+    border: 2px solid var(--color-light2);
+    /* border-radius: 8px; */
+    padding: 8px; }    
+
+.input-loud1:focus {
+    box-shadow: 0 0 8px var(--color-dark1);
+    border-radius: 0px;
+    outline: none; }
+
+.input-loud1[type=date]:invalid {
+    color: var(--color-light2);
+}
+
+.button-link-quiet1:hover {
+    text-decoration: none;
+    color: var(--color-dark1);
+}
+
+/*
+ *
+ *
+ *   DIVs 
+ *
+ *
+ */
+
+ /* div for 2 buttons side by side */
+ .two-buttons {
+     display:flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .row {
+     width: auto;
+ }
+
+/* CS50 Stuff.... try deleting this and see what happens
 th, td
 {
     padding: 8px;
@@ -44,13 +186,7 @@ table
 {
     width: 100%;
     padding: 50px;
-}
+} */
 
-.event-main
-{
-    max-width: 600px;
-    background-color: #dddddd;
-    border: 1px solid #444444;
-    padding: 8px;
-    margin-bottom: 8px;
-}
+/* WIDTHS */
+.w300 { min-width: 300px; }
