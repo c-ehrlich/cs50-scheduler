@@ -5,50 +5,61 @@
 {% endblock %}
 
 {% block main %}
-    <h3>Event</h3>
-    <!-- {{ event }} -->
-        <form class="edit-event-grid" action="/edit/{{ event.hash }}" method="post">
-            <input autocomplete="off" class="input-loud1 edit-grid-title" name="name" value="{{ event.eventname }}" type="text">
-            <textarea class="input-loud1 edit-grid-description" name="description" rows="4">{{ event.description }}</textarea>
-            <input autocomplete="off" class="input-loud1 edit-grid-date" name="date" value="{{ event.date }}" type="date">
-            <button class="button-loud1 edit-grid-submit" type="submit">Submit</button>
-        </form>
-    <hr>
-    <h3>Slots</h3>
-    {% for slot in slots %}
-        <!-- {{ slot }} -->
-        <form class="edit-slots-grid" action="/slot_edit/{{ slot.id }}" method="post">
-            <input class="edit-slots-time-start" type="time" name="{{ slot.id }}.time_start" value="{{ slot.time_start }}">
-            <input class="edit-slots-time-end" type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
-            <!-- move into here -->
-            <div id="edit-slots-delete" id="{{ slot.id }}-delete-insert"></div>
-            <button class="button-loud1 edit-slots-submit" type="submit">Submit</button>
-        </form>
-        <!-- move from here -->
-        <div id="{{ slot.id }}-delete-source">
-            <form action="/slot_delete/{{ slot.id }}" method="post">
-                <input type=submit class="button-delete1" value="Delete">
+    <div id="JSnameDiv">
+        <h3>Event</h3>
+        <!-- {{ event }} -->
+            <form class="edit-event-grid" action="/edit/{{ event.hash }}" method="post">
+                <input autocomplete="off" class="input-loud1 edit-grid-title" name="name" value="{{ event.eventname }}" type="text">
+                <textarea class="input-loud1 edit-grid-description" name="description" rows="4">{{ event.description }}</textarea>
+                <input autocomplete="off" class="input-loud1 edit-grid-date" name="date" value="{{ event.date }}" type="date">
+                <button class="button-loud1 edit-grid-submit" type="submit">Submit</button>
             </form>
-        </div>
         <hr>
-        <!-- code that should do the moving -->
-        <script>
-            document.getElementById('{{ slot.id }}-delete-insert').appendChild(
-                document.getElementById('{{ slot.id }}-delete-source')
-            );
-        </script>
-    {% endfor %}
-    <h3>Add Slot</h3>
-    <form action="/slot_add/{{ event.hash }}" method="post">
-        <label for="slot_start">Start Time</label>
-        <input type="time" name="slot_start">
-        <label for="slot_end">End Time</label>
-        <input type="time" name="slot_end">
-        <button class="button-loud1" type="submit">Create</button>
-    </form>
+        <h3>Slots</h3>
+        <div id="edit-slots-overall">
+            {% for slot in slots %}
+                <!-- {{ slot }} -->
+                <div class="slot-bucket">
+                    <form id="form-{{ slot.id }}" class="edit-slots-grid" action="/slot_edit/{{ slot.id }}" method="post">
+                        <div style="visibility: hidden">{{ slot.id }}</div>
+                        <input class="edit-slots-time-start" type="time" name="{{ slot.id }}.time_start" value="{{ slot.time_start }}">
+                        <input class="edit-slots-time-end" type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
+                        <!-- move into here -->
+                        <div id="edit-slots-delete" id="{{ slot.id }}-delete-insert"></div>
+                        <button class="button-loud1 edit-slots-submit" type="submit">Submit</button>
+                    </form>
+                    <!-- move from here -->
+                    <div id="{{ slot.id }}-delete-source">
+                        <form action="/slot_delete/{{ slot.id }}" method="post">
+                            <input type=submit class="button-delete1" value="Delete">
+                        </form>
+                    </div>
+                    <hr>
+                    
+                    <!-- Code that does the moving -->
+                    <!-- I'm so, so sorry -->
+                    <script>
+                        var indexnum = document.getElementById("JSnameDiv").lastElementChild.lastElementChild.firstElementChild.firstElementChild.innerHTML;
+                        document.getElementById('form-' + indexnum).lastElementChild.previousElementSibling.appendChild(
+                            document.getElementById(indexnum + '-delete-source')
+                        );
+                    </script>
+                </div>
+                
+            {% endfor %}
+        </div>
+        <h3>Add Slot</h3>
+        <form action="/slot_add/{{ event.hash }}" method="post">
+            <label for="slot_start">Start Time</label>
+            <input type="time" name="slot_start">
+            <label for="slot_end">End Time</label>
+            <input type="time" name="slot_end">
+            <button class="button-loud1" type="submit">Create</button>
+        </form>
 
-    <hr>
-    <form action="/view/{{ event.hash }}" method="get">
-        <input type=submit class="button-loud1" value="Back">
-    </form>
+        <hr>
+        <form action="/view/{{ event.hash }}" method="get">
+            <input type=submit class="button-loud1" value="Back">
+        </form>
+    </div>
 {% endblock %}
