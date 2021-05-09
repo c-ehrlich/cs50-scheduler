@@ -327,6 +327,7 @@ def delete_from_view(event_id):
 @app.route("/edit/<event_hash>", methods=["GET", "POST"])
 @login_required
 def edit(event_hash):
+    # Get here by clicking on edit, or calling it from somewhere else
     if request.method == "GET":
 
         # check if the event exists
@@ -350,6 +351,7 @@ def edit(event_hash):
         # show the edit page for that event
         return render_template("edit.html", event=event, slots=slots)
 
+    # Get here by editing the name, description, or date on the edit page and pressing submit
     if request.method == "POST":
 
         # check if the event exists
