@@ -160,7 +160,6 @@ def create():
 
         # Check that the user isn't trying to make an event in the past
         date_formatted = datetime.strptime(date_string, date_format).date()
-        print(f"{date_formatted} | {date.today()}")
         if date_formatted < date.today():
             return apology("Please don't try to schedule a event in the past. That's rude!")
 
@@ -614,7 +613,6 @@ def remove(event, user):
         # Ensure that this is being attempted only by the owner of the event
         currentuser = session.get("user_id")
         owner = db.execute("SELECT owner_id FROM events WHERE hash = ?", event)[0]['owner_id']
-        print(f"Current: {currentuser} Owner: {owner}")
         if currentuser != owner:
             return apology("Only the owner of an event can cancel other people's appointments")
 
@@ -733,8 +731,6 @@ def slot_edit(slot_id):
                            "JOIN slots ON slots.event_id = events.id " +
                            "WHERE slots.id = ?",
                            slot_id)[0];
-
-        print(event)
 
         # make sure the user owns the event
         if session.get("user_id") != event['owner_id']:
