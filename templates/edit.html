@@ -21,7 +21,7 @@
                 <!-- {{ slot }} -->
                 <div class="slot-bucket">
                     <form id="form-{{ slot.id }}" class="edit-slots-grid" action="/slot_edit/{{ slot.id }}" method="post">
-                        <div style="visibility: hidden">{{ slot.id }}</div>
+                        <div>{{ slot.id }}</div>
                         <input class="edit-slots-time-start" type="time" name="{{ slot.id }}.time_start" value="{{ slot.time_start }}">
                         <input class="edit-slots-time-end" type="time" name="{{ slot.id }}.time_end" value="{{ slot.time_end }}">
                         <!-- move into here -->
@@ -40,6 +40,7 @@
                     <!-- I'm so, so sorry -->
                     <script>
                         var indexnum = document.getElementById("JSnameDiv").lastElementChild.lastElementChild.firstElementChild.firstElementChild.innerHTML;
+                        console.log("Moving edit button for slot " + indexnum)
                         document.getElementById('form-' + indexnum).lastElementChild.previousElementSibling.appendChild(
                             document.getElementById(indexnum + '-delete-source')
                         );

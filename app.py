@@ -663,7 +663,7 @@ def slot_add(event_hash):
         rowid = int((db.execute("SELECT last_insert_rowid()")[0]["last_insert_rowid()"]))
 
         # get a list of dictionaries containing start and end times of ALL the slots for this event
-        slots = db.execute("SELECT time_start, time_end FROM slots WHERE event_id = ? ORDER BY time_start ASC",
+        slots = db.execute("SELECT id, time_start, time_end FROM slots WHERE event_id = ? ORDER BY time_start ASC",
                             event['id'])
 
         # run verify slots
