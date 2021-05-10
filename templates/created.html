@@ -47,13 +47,13 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" style="border-bottom: 1px solid #dee2e6;">
                                 Are you sure you want to delete the event "{{ event.eventname }}" on {{ event.date }}?
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="button-loud1" data-dismiss="modal">Close</button>
-                                <form action="/delete_from_created/{{ event.id }}" method="post">
-                                    <button type="submit" class="button-quiet1">Delete {{ event.id }}</button>
+                            <div class="modal-footer two-buttons" style="margin-left: auto; border-top: none;" b>
+                                <button type="button" class="button-loud1" data-dismiss="modal">Cancel</button>
+                                <form action="/delete_from_created/{{ event.id }}" method="post" style="padding-left: 8px;">
+                                    <button type="submit" class="button-quiet1">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -98,15 +98,14 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" style="border-bottom: 1px solid #dee2e6;">
                                 Are you sure you want to delete the event "{{ event.eventname }}" on {{ event.date }}?
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <form action="/delete_from_created/{{ event.id }}" method="post">
-                                    <button type="submit" class="btn btn-primary">Delete {{ event.id }}</button>
+                            <div class="modal-footer two-buttons" style="margin-left: auto; border-top: none;" b>
+                                <button type="button" class="button-loud1" data-dismiss="modal">Cancel</button>
+                                <form action="/delete_from_created/{{ event.id }}" method="post" style="padding-left: 8px;">
+                                    <button type="submit" class="button-quiet1">Delete</button>
                                 </form>
-                                
                             </div>
                         </div>
                     </div>
@@ -116,7 +115,3 @@
         {% endfor %}
     </div>
 {% endblock %}
-
-<!-- <form action="/delete_from_created/{{ event.id }}" method="post">
-    <input type="submit" class="btn btn-primary" value="delete">
-</form> -->
