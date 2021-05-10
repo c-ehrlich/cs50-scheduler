@@ -276,7 +276,7 @@ def created():
                               session.get("user_id"), today)
 
         # Get list of past events created by the active user
-        pastmeet = db.execute("SELECT events.id, events.eventname, events.description, events.hash, events.date FROM events " +
+        pastmeet = db.execute("SELECT events.id, users.username, events.eventname, events.description, events.hash, events.date FROM events " +
                               "JOIN users ON events.owner_id = users.id " +
                               "WHERE users.id = ? " +
                               "AND events.date < ? " +
