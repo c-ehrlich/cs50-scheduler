@@ -73,6 +73,13 @@ h3 {
     color: var(--color-dark2);
     padding-bottom: 16px; }
 
+.category-header {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    color: var(--color-dark2);
+    margin-bottom: 32px;
+}
+
 .center {
     display: flex;
     flex-direction: column;
