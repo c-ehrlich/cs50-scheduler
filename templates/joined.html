@@ -9,32 +9,42 @@
 {% endblock %}
 
 {% block main %}
+<div class="center">
     <h3>Future events</h3>
     {% for event in events %}
         <div class="event-main">
-            <p>{{ event.hash }}</p>
-            <p>{{ event.eventname }}</p>
-            <p>{{ event.date }}</p>
-            <p>{{ event.description }}</p>
-            <p>Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
-            <p>event: {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+            <div class="card-top">
+                <p class="event-card-hash">{{ event.hash }}</p> 
+                <h2 class="event-card-title">{{ event.eventname }}</h2>
+                <p class="event-card-datetime">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+                <p>{{ event.username }}</p>
+            </div>
+            <div class="card-middle">
+                <p class="event-card-description">{{ event.description }}</p>
+            </div>
+            <p class="event-card-slots">Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
             <form action="/view/{{ event.hash }}" method="get">
-                <input class="button-loud1" type=submit value="View">
+                <input class="button-loud1 button-width1 right-button" type=submit value="View">
             </form>
         </div>
     {% endfor %}
     <h3>Past events</h3>
     {% for event in pastmeet %}
         <div class="event-main">
-            <p>{{ event.hash }}</p>
-            <p>{{ event.eventname }}</p>
-            <p>{{ event.date }}</p>
-            <p>{{ event.description }}</p>
-            <p>Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
-            <p>event: {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+            <div class="card-top">
+                <p class="event-card-hash">{{ event.hash }}</p> 
+                <h2 class="event-card-title">{{ event.eventname }}</h2>
+                <p class="event-card-datetime">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+                <p>{{ event.username }}</p>
+            </div>
+            <div class="card-middle">
+                <p class="event-card-description">{{ event.description }}</p>
+            </div>
+            <p class="event-card-slots">Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
             <form action="/view/{{ event.hash }}" method="get">
-                <input class="button-loud1" type=submit value="View">
+                <input class="button-loud1 button-width1 right-button" type=submit value="View">
             </form>
         </div>
     {% endfor %}
+</div>
 {% endblock %}

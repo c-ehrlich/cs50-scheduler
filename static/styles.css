@@ -202,9 +202,15 @@ h3 {
 
  /* div for 2 buttons side by side */
  .two-buttons {
-     display:flex;
+     display: flex;
      align-items: center;
      justify-content: center;
+ }
+
+ .center-buttons {
+     display: flex;
+     flex-direction: row;
+     align-items: end;
  }
 
  .row {
