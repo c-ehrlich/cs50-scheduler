@@ -19,7 +19,7 @@
             <div class="card-top">
                 <p class="event-card-hash">{{ event.hash }}</p> 
                 <h2 class="event-card-title">{{ event.eventname }}</h2>
-                <p class="event-card-datetime">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+                <p class="event-card-datetime">{{ event.weekday }} {{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
                 <p>{{ event.username }}</p>
             </div>
             <div class="card-middle">
@@ -40,7 +40,7 @@
             <div class="card-top">
                 <p class="event-card-hash">{{ event.hash }}</p> 
                 <h2 class="event-card-title">{{ event.eventname }}</h2>
-                <p class="event-card-datetime">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+                <p class="event-card-datetime">{{ event.weekday }} {{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
                 <p>{{ event.username }}</p>
             </div>
             <div class="card-middle">

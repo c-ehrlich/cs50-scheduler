@@ -295,6 +295,7 @@ def created():
             event['slots_full'] = event['slots_total'] - event['slots_empty']
             event['time_event_start'] = get_start_time(db, event['hash'])
             event['time_event_end'] = get_end_time(db, event['hash'])
+            event['weekday'] = week_day(event['date'])
 
         # Show the selected events
         return render_template("created.html", events=events, pastmeet=pastmeet)
@@ -477,6 +478,7 @@ def joined():
         for event in events + pastmeet:
             event['time_event_start'] = get_start_time(db, event['hash'])
             event['time_event_end'] = get_end_time(db, event['hash'])
+            event['weekday'] = week_day(event['date'])
 
         return render_template("joined.html", events=events, pastmeet=pastmeet)
 
