@@ -47,12 +47,8 @@
 
 .slot-name {
     border-bottom: 1px solid var(--color-light2);
-}
-
-.center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .create-slot {
