@@ -24,6 +24,12 @@
     display: grid;
 }
 
+.card-top-leftright {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .category-header {
     font-family: 'Roboto Slab', serif;
     font-weight: 600;
@@ -35,6 +41,16 @@
     color: var(--color-light2);
     text-align: left;
     margin-bottom: 0;
+    font-size: 12px;
+}
+
+.event-index-attending {
+    color: var(--color-light2);
+    text-align: right;
+    margin-bottom: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-dark2);
+    font-weight: 500;
     font-size: 12px;
 }
 

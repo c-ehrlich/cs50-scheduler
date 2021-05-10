@@ -1,16 +1,38 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Log In
+    Home
+{% endblock %}
+
+{% block head %}
+    <link href="/static/cards.css" rel="stylesheet">   
 {% endblock %}
 
 {% block main %}
-    <h1>My events in the next 7 days</h1>
+<div class="center">
+    <h1>Upcoming Events</h1>
     {% for event in events %}
-        {{ event }}
-        <form action="/view/{{ event.hash }}" method="get">
-            <input type=submit value="View">
-        </form>
-        <hr>
+        <div class="event-main">
+            <div class="card-top">
+                <div class="card-top-leftright">
+                    <div class="event-card-hash">{{ event.hash }}</div>
+                    <div class="event-index-attending">{{ event.type }}</div>
+                </div>
+                <h2 class="event-card-title">{{ event.eventname }}</h2>
+            </div>
+            <p class="event-card-datetime m16top" style="margin-bottom: 8px;">{{ event.date }}, 
+                {% if event.type == "Attending" %}
+                    {{ event.time_start }} - {{ event.time_end }}
+                {% else %}
+                    {{ event.time_event_start }} - {{ event.time_event_end }}
+                {% endif %}
+            </p>
+            <div class="two-buttons d1">
+                <form action="/view/{{ event.hash }}" method="get" >
+                    <input type=submit value="View" class="button-loud1 button-width1">
+                </form>
+            </div>
+        </div>
     {% endfor %}
+</div>
 {% endblock %}

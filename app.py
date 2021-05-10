@@ -74,6 +74,10 @@ def index():
     for event in events:
             event['time_event_start'] = get_start_time(db, event['hash'])
             event['time_event_end'] = get_end_time(db, event['hash'])
+            if user == event['owner_id']:
+                event['type'] = "Hosting"
+            else:
+                event['type'] = "Attending"
 
     return render_template("index.html", events=events)
 
