@@ -10,7 +10,10 @@
 
 {% block main %}
 <div class="center">
-    <h1 class="category-header">Future events</h1>
+    <h1 class="category-header">Upcoming</h1>
+    {% if not events|length %}
+        <p>No upcoming events</p>
+    {% endif %}
     {% for event in events %}
         <div class="event-main">
             <div class="card-top">
@@ -28,7 +31,10 @@
             </form>
         </div>
     {% endfor %}
-    <h1 class="category-header">Past events</h1>
+    <h1 class="category-header">Past</h1>
+    {% if not pastmeet|length %}
+        <p>No past events</p>
+    {% endif %}
     {% for event in pastmeet %}
         <div class="event-main">
             <div class="card-top">

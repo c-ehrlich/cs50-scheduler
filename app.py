@@ -53,7 +53,7 @@ def index():
     user = session.get("user_id")
 
     # decide how many days of future events to display on the front page
-    days_to_display = 14
+    days_to_display = 7
 
     # create variables for today and the last day of events to display on the front page
     today = date.today()
