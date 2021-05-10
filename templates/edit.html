@@ -36,16 +36,17 @@
                     <!-- move from here -->
                     <div id="{{ slot.id }}-delete-source">
                         <form action="/slot_delete/{{ slot.id }}" method="post">
-                            <input type=submit class="button-delete1" value="Delete">
+                            <input type=submit class="button-delete1 no-margin button-width1" value="Delete">
                         </form>
                     </div>
                     <hr>
                     
                     <!-- Code that does the moving -->
                     <!-- I'm so, so sorry -->
+                    <div style="display: none">{{ slot.id }}</div>
                     <script>
-                        var indexnum = document.getElementById("JSnameDiv").lastElementChild.lastElementChild.firstElementChild.firstElementChild.innerHTML;
-                        console.log("Moving edit button for slot " + indexnum)
+                        var indexnum = document.getElementById("JSnameDiv").lastElementChild.lastElementChild.lastElementChild.previousElementSibling.innerHTML;
+                        console.log("Moving edit button for slot " + indexnum);
                         document.getElementById('form-' + indexnum).lastElementChild.previousElementSibling.appendChild(
                             document.getElementById(indexnum + '-delete-source')
                         );
@@ -55,17 +56,17 @@
             {% endfor %}
         </div>
         <h3>Add Slot</h3>
-        <form action="/slot_add/{{ event.hash }}" method="post">
-            <label for="slot_start">Start Time</label>
-            <input type="time" name="slot_start">
-            <label for="slot_end">End Time</label>
-            <input type="time" name="slot_end">
-            <button class="button-loud1" type="submit">Create</button>
+        <form action="/slot_add/{{ event.hash }}" method="post" class="add-slot-grid">
+            <label for="slot_start" class="add-slot-start-label">Start Time</label>
+            <input type="time" class="add-slot-start-time" name="slot_start">
+            <label for="slot_end" class="add-slot-end-label">End Time</label>
+            <input type="time" class="add-slot-end-time" name="slot_end">
+            <button class="button-loud1 add-slot-button no-margin button-width1" type="submit">Create</button>
         </form>
 
         <hr>
-        <form action="/view/{{ event.hash }}" method="get">
-            <input type=submit class="button-loud1" value="Back">
+        <form action="/view/{{ event.hash }}" method="get" class="two-buttons">
+            <input type=submit class="button-loud1 button-width1" value="Back">
         </form>
     </div>
 </div>
