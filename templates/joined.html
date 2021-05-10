@@ -10,7 +10,7 @@
 
 {% block main %}
 <div class="center">
-    <h3>Future events</h3>
+    <h1 class="category-header">Future events</h1>
     {% for event in events %}
         <div class="event-main">
             <div class="card-top">
@@ -23,12 +23,12 @@
                 <p class="event-card-description">{{ event.description }}</p>
             </div>
             <p class="event-card-slots">Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
-            <form action="/view/{{ event.hash }}" method="get">
-                <input class="button-loud1 button-width1 right-button" type=submit value="View">
+            <form action="/view/{{ event.hash }}" method="get" class="two-buttons d1">
+                <input class="button-loud1 button-width1" type=submit value="View">
             </form>
         </div>
     {% endfor %}
-    <h3>Past events</h3>
+    <h1 class="category-header">Past events</h1>
     {% for event in pastmeet %}
         <div class="event-main">
             <div class="card-top">
@@ -41,8 +41,8 @@
                 <p class="event-card-description">{{ event.description }}</p>
             </div>
             <p class="event-card-slots">Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
-            <form action="/view/{{ event.hash }}" method="get">
-                <input class="button-loud1 button-width1 right-button" type=submit value="View">
+            <form action="/view/{{ event.hash }}" method="get" class="two-buttons d1">
+                <input class="button-loud1 button-width1" type=submit value="View">
             </form>
         </div>
     {% endfor %}
