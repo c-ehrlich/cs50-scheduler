@@ -19,8 +19,6 @@ font-family: 'Open Sans', sans-serif; */
     --color-red2: #FF0000;
 }
 
-
-
 ::placeholder { /* Most modern browsers support this now. */
     color:    var(--color-light2);
  }
@@ -159,6 +157,24 @@ h3 {
     color: var(--color-light2);
 }
 
+.input-loud-datetime {
+    font-family: 'Monsterrat', sans-serif;
+    background-color: var(--color-white);
+    color: var(--color-dark1);
+    border: 2px solid var(--color-light2);
+    /* border-radius: 8px; */
+    /* padding: 8px;  */
+}    
+
+.input-loud-datetime:focus {
+    box-shadow: 0 0 8px var(--color-dark1);
+    border-radius: 0px;
+    outline: none; }
+
+.input-loud-datetime[type=date]:invalid {
+    color: var(--color-light2);
+}
+
 .button-link-quiet1:hover {
     text-decoration: none;
     color: var(--color-dark1);
@@ -168,8 +184,8 @@ h3 {
     display: grid;
     /* align-items: center; */
     justify-content: center;
-    grid-template-rows: auto;
-    grid-template-columns: 150px 150px 150px 150px;
+    grid-template-rows: 40px;
+    grid-template-columns: 90px 90px 160px 160px;
 }
 
 .edit-slots-time-start { grid-column: 1 / 2; }
@@ -181,7 +197,7 @@ h3 {
     display: grid;
     justify-content: center;
     grid-gap: 8px;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto 40px;
     grid-template-columns: 170px 160px auto;
     grid-template-areas:
         "egti egti egti"
@@ -247,3 +263,6 @@ table
 .m16top {
     margin-top: 16px;
 }
+
+.no-margin {
+    margin: 0; }
