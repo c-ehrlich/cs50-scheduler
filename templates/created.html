@@ -68,20 +68,26 @@
         {% endif %}
         {% for event in pastmeet %}
             <div class="event-main">
-                <p>{{ event.hash }}</p> 
-                <h2>{{ event.eventname }}</h2>
-                <p>{{ event.date }}</p>
-                <p>{{ event.description }}</p>
-                <p>{{ event.slots_full }} / {{ event.slots_total }} slots filled</p>
-                <p>Full Duration {{ event.time_event_start }} - {{ event.time_event_end }}</p>
-                <form action="/view/{{ event.hash }}" method="get">
-                    <input type=submit value="View">
-                </form>
-                <form>
-                    <button type="button" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
-                        Delete
-                    </button>
-                </form>
+                <div class="card-top">
+                    <p class="event-card-hash">{{ event.hash }}</p> 
+                    <h2 class="event-card-title">{{ event.eventname }}</h2>
+                    <p class="event-card-datetime">{{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
+                    <p>{{ event.username }}</p>
+                </div>
+                <div class="card-middle">
+                    <p class="event-card-description">{{ event.description }}</p>
+                </div>
+                <p class="event-card-slots">{{ event.slots_full }} / {{ event.slots_total }} slots filled</p>
+                <div class="two-buttons d1">
+                    <form>
+                        <button type="button" class="button-quiet1 button-width1" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
+                            Delete
+                        </button>
+                    </form>
+                    <form action="/view/{{ event.hash }}" method="get">
+                        <input type=submit value="View" class="button-loud1 button-width1">
+                    </form>
+                </div>
                 <!-- Modal -->
                 <div class="modal fade"  id="confirm_delete_{{ event.id }}"tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
