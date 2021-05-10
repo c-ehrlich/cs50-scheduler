@@ -1,9 +1,11 @@
 import os
 import requests
 import urllib.parse
+import calendar
 
 from flask import redirect, render_template, request, session
 from functools import wraps
+from datetime import date, datetime
 
 from cs50 import SQL
 
@@ -161,6 +163,13 @@ def verify_slots(slots):
     return ""
 
 
+def week_day(date_in):
+    # Create weekDays tuple for adding weekday to event information
+    weekDays = ("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+    try:
+        return weekDays[datetime.strptime(date_in, '%Y-%m-%d').weekday()]
+    except:
+        return "ERROR GETTING DATE"
 
 
 

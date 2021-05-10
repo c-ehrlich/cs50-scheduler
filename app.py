@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # new helper functions
-from helpers import delete_event, join_event, leave_event, verify_slots, get_start_time, get_end_time
+from helpers import delete_event, join_event, leave_event, verify_slots, get_start_time, get_end_time, week_day
 
 # Configure application
 app = Flask(__name__)
@@ -39,12 +39,9 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///scheduler.db")
 
-# (!) SHOULD ATTEMPT TO DO THIS IN A BETTER WAY (BY SETTING THINGS TO NULL INSTEAD OF 0)
 # If there is no user with id=0, then create one
 # This is the user that slots.user_id is initialized to when making slots
-# Because I can't figure out how to send NULL to sql
-# (!) SHOULD ATTEMPT TO DO THIS IN A BETTER WAY (BY SETTING THINGS TO NULL INSTEAD OF 0)
-if not db.execute("SELECT * FROM users WHERE id=0"):
+if not db.execute("SELECT * FROM users WHERE id = 0"):
     db.execute("INSERT INTO users (id, username, hash, email, is_moderator) VALUES (0, '0', '0', '0', 0)")
 
 @app.route("/")
@@ -78,6 +75,7 @@ def index():
                 event['type'] = "Hosting"
             else:
                 event['type'] = "Attending"
+            event['weekday'] = week_day(event['date'])
 
     return render_template("index.html", events=events)
 

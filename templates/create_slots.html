@@ -14,7 +14,7 @@
         <form action="/create_slots" class="w400" method="post">
             {% for slot in slots %}
                 <div class="create-slot">
-                    <p class="slot-name" font-weight="700">Slot {{ loop.index }}</p>
+                    <p class="slot-name">Slot {{ loop.index }}</p>
                     <div class="slot-times">
                         <div class="start-time">
                             <label for="{{ slot.id }}.start">Start Time</label>
