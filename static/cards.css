@@ -133,7 +133,8 @@
     transition: all .1s;
     flex-basis: 40%; } 
 .button-quiet1:hover, .button-delete1:hover {
-    border: 2px solid var(--color-red2);
-    background-color: var(--color-red1);
     -webkit-box-shadow: 0 0 var(--color-light2);
             box-shadow: 0 0 var(--color-light2); } 
+.button-delete1:hover {
+    border: 2px solid var(--color-red2);
+    background-color: var(--color-red1); } 

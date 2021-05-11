@@ -4,20 +4,37 @@
     Register
 {% endblock %}
 
+{% block head %}
+    <link href="/static/cards.css" rel="stylesheet">  
+    <link href="/static/create.css" rel="stylesheet">   
+{% endblock %}
+
 {% block main %}
-    <form action="/register" method="post">
+    <h1 class="category-header">Register</h1>
+    <form action="/register" class="event-main center-self" method="post">
+        <p>Enter the details of your new account.</p>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Name" type="text">
+            <input autocomplete="off" autofocus class="input-loud1 login-input-field" name="name" placeholder="Name" type="text">
         </div>
         <div class="form-group">
-            <input autocomplete="off" class="form-control" name="email" placeholder="Email" type="email">
+            <input autocomplete="off" class="input-loud1 login-input-field" name="email" placeholder="Email" type="email">
         </div>
         <div class="form-group">
-            <input autocomplete="off" class="form-control" name="password" placeholder="Password" type="password">
+            <input autocomplete="off" class="input-loud1 login-input-field" name="password" placeholder="Password" type="password">
         </div>
         <div class="form-group">
-            <input autocomplete="off" class="form-control" name="confirmation" placeholder="Confirm Password" type="password">
+            <input autocomplete="off" class="input-loud1 login-input-field" name="confirmation" placeholder="Confirm Password" type="password">
         </div>
-        <button class="btn btn-primary" type="submit">Register</button>
+        <hr>
+        <div class="two-buttons">
+            <div class="row">
+                <a class="button-quiet1 button-width1 button-link-quiet1 center-self" style="margin-right: 8px;" href="/">Cancel</a>
+                <button class="button-loud1 button-width1 center-self" style="margin-left: 8px;" type="submit">Register</button>
+            </div>
+        </div>
     </form>
 {% endblock %}
+
+
+<!-- <div class="two-buttons d1">
+    <div class="row"> -->class="input-loud1 login-input-field"
