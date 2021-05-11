@@ -4,20 +4,27 @@
     Log In
 {% endblock %}
 
+{% block head %}
+    <link href="/static/cards.css" rel="stylesheet">   
+{% endblock %}
+
 {% block main %}
-    <h3>Welcome to Scheduler</h3>
-    <form action="/login" method="post">
-        <div class="form-group">
-            <input autocomplete="off" autofocus class="input-loud1" name="email" placeholder="Email" type="email">
-        </div>
-        <div class="form-group">
-            <input class="input-loud1" name="password" placeholder="Password" type="password">
-        </div>
-        <button class="button-loud1" type="submit">Log In</button>
-    </form>
-    <hr>
-    <p class="text-quiet">Forgot your password?</p>
-    <form action="/reset_password" method="get">
-        <button class="button-quiet1" type="submit">Reset Password</button>
-    </form>
+    <h1 class="category-header">Welcome to Scheduler!</h1>
+    <div class="event-main center-self">
+        <p>Please enter your account details to continue</p>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="input-loud1 login-input-field" name="email" placeholder="Email" type="email">
+            </div>
+            <div class="form-group">
+                <input class="input-loud1 login-input-field" name="password" placeholder="Password" type="password">
+            </div>
+            <button class="button-loud1 button-width1 center-self" type="submit">Log In</button>
+        </form>
+        <hr>
+        <p class="text-quiet">Forgot your password?</p>
+        <form action="/reset_password" method="get">
+            <button class="button-quiet1 button-width1 center-self" type="submit">Reset Password</button>
+        </form>
+    </div>
 {% endblock %}
