@@ -7,10 +7,9 @@ Final project for Harvard University CS50. Web app that lets users create events
 * Flask-Session
 * requests
 
-## Instructions
+## Instructions (for demo usage)
 1. Duplicate scheduler.bak and rename the copy to scheduler.db
 2. In the root directory of the project, `flask run`
-3. The default admin account is admin/hunter2, changing the password is recommended
 
 ## Learning Outcomes
 * Strengthened my understanding of building web apps using Python and Flask
