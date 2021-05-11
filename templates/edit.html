@@ -37,7 +37,10 @@
                     <!-- move from here -->
                     <div id="{{ slot.id }}-delete-source">
                         <form action="/slot_delete/{{ slot.id }}" method="post">
-                            <input type=submit class="button-delete1 no-margin button-width1" value="Delete">
+                            <!-- <input type=submit class="button-delete1 no-margin button-width1" value="Delete"> -->
+                            <button type="button" class="button-delete1 no-margin button-width1" data-toggle="modal" data-target="#confirm_delete_slot_{{ slot.id }}">
+                                Delete
+                            </button>
                         </form>
                     </div>
                     <hr>
@@ -52,6 +55,28 @@
                             document.getElementById(indexnum + '-delete-source')
                         );
                     </script>
+
+                    <div class="modal fade"  id="confirm_delete_slot_{{ slot.id }}"tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete event</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="border-bottom: 1px solid #dee2e6;">
+                                    Are you sure you want to delete the slot from {{ slot.time_start }} until {{ slot.time_end }}?
+                                </div>
+                                <div class="modal-footer two-buttons" style="margin-left: auto; border-top: none;" b>
+                                    <button type="button" class="button-loud1" data-dismiss="modal">Cancel</button>
+                                    <form action="/delete_from_created/{{ event.id }}" method="post" style="padding-left: 8px;">
+                                        <button type="submit" class="button-delete1">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
             {% endfor %}
