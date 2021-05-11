@@ -58,10 +58,10 @@
         </div>
         <h3>Add Slot</h3>
         <form action="/slot_add/{{ event.hash }}" method="post" class="add-slot-grid">
-            <label for="slot_start" class="add-slot-start-label">Start Time</label>
-            <input type="time" class="add-slot-start-time" name="slot_start">
-            <label for="slot_end" class="add-slot-end-label">End Time</label>
-            <input type="time" class="add-slot-end-time" name="slot_end">
+            <label for="slot_start" class="add-slot-start-label">Start:</label>
+            <input type="time" class="add-slot-start-time input-loud-datetime" name="slot_start">
+            <label for="slot_end" class="add-slot-end-label">End:</label>
+            <input type="time" class="add-slot-end-time input-loud-datetime" name="slot_end">
             <button class="button-loud1 add-slot-button no-margin button-width1" type="submit">Create</button>
         </form>
 

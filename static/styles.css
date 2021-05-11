@@ -226,12 +226,12 @@ h3 {
     justify-content: center;
     grid-template-rows: 40px;
     grid-gap: 8px;
-    grid-template-columns: 85px 71px 85px 71px 160px;
+    grid-template-columns: 78px 80px 74px 80px 160px;
 }
 
-.add-slot-start-label { grid-column: 1 / 2; align-self: center; }
+.add-slot-start-label { grid-column: 1 / 2; align-self: flex-end; justify-self: right; }
 .add-slot-start-time { grid-column: 2 / 3; }
-.add-slot-end-label { grid-column: 3 / 4; align-self: center; }
+.add-slot-end-label { grid-column: 3 / 4; align-self: flex-end; justify-self: right; }
 .add-slot-end-time { grid-column: 4 / 5; }
 .add-slot-button { grid-column: 5 / 6; }
 
