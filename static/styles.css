@@ -237,7 +237,7 @@ h3 {
 
 .view-slot-grid {
     display: grid;
-    grid-template-columns: 48px 24px 48px 16px 270px 160px;
+    grid-template-columns: 48px 24px 48px 40px 246px 160px;
     grid-template-rows: 40px; 
     align-items: center; }
 .view-slot-time-start { grid-column: 1; }

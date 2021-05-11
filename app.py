@@ -421,7 +421,7 @@ def join_id():
         return render_template("join.html")
 
     if request.method == "POST":
-        hash_id = request.form.get("hash_id")
+        hash_id = request.form.get("hash_id").upper()
 
         try:
             event = db.execute("SELECT * FROM events WHERE hash = ?", hash_id)[0]
@@ -479,6 +479,10 @@ def joined():
             event['time_event_start'] = get_start_time(db, event['hash'])
             event['time_event_end'] = get_end_time(db, event['hash'])
             event['weekday'] = week_day(event['date'])
+            event['owner'] = db.execute("SELECT username FROM users " +
+                                        "JOIN events ON events.owner_id = users.id " +
+                                        "WHERE events.hash = ?", 
+                                        event['hash'])[0]['username'];
 
         return render_template("joined.html", events=events, pastmeet=pastmeet)
 

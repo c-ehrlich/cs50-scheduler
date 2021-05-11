@@ -25,6 +25,9 @@
             <div class="card-middle">
                 <p class="event-card-description">{{ event.description }}</p>
             </div>
+            <div class="card-middle">
+                <p class="event-card-description">Hosted by: {{ event.owner }}</p>
+            </div>
             <p class="event-card-slots">Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
             <form action="/view/{{ event.hash }}" method="get" class="two-buttons d1">
                 <input class="button-loud1 button-width1" type=submit value="View">
@@ -45,6 +48,9 @@
             </div>
             <div class="card-middle">
                 <p class="event-card-description">{{ event.description }}</p>
+            </div>
+            <div class="card-middle">
+                <p class="event-card-description">Hosted by: {{ event.owner }}</p>
             </div>
             <p class="event-card-slots">Your Slot: {{ event.time_start }} - {{ event.time_end }}</p>
             <form action="/view/{{ event.hash }}" method="get" class="two-buttons d1">

@@ -87,7 +87,7 @@
                     <input type="submit" class="button-loud1 button-width1 no-margin" value="Pick this slot">
                 </form>
             {% elif slot.user_id == user %}
-                <div class="view-slot-username">U GOT THIS ONE</div>
+                <div class="view-slot-username"><strong>{{ slot.username }}</strong></div>
                 <!-- give the slot a differenent div class that overrides its bg-color! -->
                 <form action="/leave/{{ event.hash }}" method="post">
                     <input type="submit" class="button-delete1 button-width1 no-margin" value="Cancel this slot">
