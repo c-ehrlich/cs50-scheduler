@@ -4,12 +4,18 @@
     Join event
 {% endblock %}
 
+{% block head %}
+    <link href="/static/cards.css" rel="stylesheet">    
+{% endblock %}
+
 {% block main %}
     <h1 class="category-header">Join Event</h1>
-    <form action="/join" method="post">
+    <form action="/join" class="event-main-flex center-self" method="post">
+        <p>Choose an Event to Join</p>
         <div class="form-group">
             <input autocomplete="off" autofocus class="input-loud1" name="hash_id" placeholder="Event ID" type="text">
         </div>
-        <button class="button-loud1 button-width1" type="submit">Join</button>
+        <hr style="width: 100%">
+        <button class="button-loud1 button-width1 center-self" type="submit">Join</button>
     </form>
 {% endblock %}
