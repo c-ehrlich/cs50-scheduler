@@ -812,4 +812,10 @@ def view(event_id):
                            event_id)[0]['username']
 
         user = session.get("user_id")
+
+        if user == event['owner_id']:
+            event['type'] = "Hosting"
+        else:
+            event['type'] = "Attending"
+
         return render_template("view.html", event=event, slots=slots, owner=owner, user=user)

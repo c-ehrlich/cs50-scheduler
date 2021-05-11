@@ -17,7 +17,10 @@
         {% for event in events %}
             <div class="event-main">
                 <div class="card-top">
-                    <p class="event-card-hash">{{ event.hash }}</p> 
+                    <div class="card-top-leftright">
+                        <div class="event-card-hash">{{ event.hash }}</div>
+                        <div class="event-index-attending">Hosting</div>
+                    </div> 
                     <h2 class="event-card-title">{{ event.eventname }}</h2>
                     <p class="event-card-datetime">{{ event. weekday }} {{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
                 </div>
@@ -68,7 +71,10 @@
         {% for event in pastmeet %}
             <div class="event-main">
                 <div class="card-top">
-                    <p class="event-card-hash">{{ event.hash }}</p> 
+                    <div class="card-top-leftright">
+                        <div class="event-card-hash">{{ event.hash }}</div>
+                        <div class="event-index-attending">Hosting</div>
+                    </div>
                     <h2 class="event-card-title">{{ event.eventname }}</h2>
                     <p class="event-card-datetime">{{ event.weekday }} {{ event.date }}, {{ event.time_event_start }} - {{ event.time_event_end }}</p>
                 </div>
