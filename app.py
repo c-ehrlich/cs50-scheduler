@@ -14,7 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # new helper functions
-from helpers import delete_event, join_event, leave_event, verify_slots, get_start_time, get_end_time, week_day
+from helpers import delete_event, join_event, leave_event, verify_slots, get_start_time, get_end_time, week_day, format_date
 
 # Configure application
 app = Flask(__name__)
@@ -795,6 +795,8 @@ def view(event_id):
 
         event['time_event_start'] = get_start_time(db, event['hash'])
         event['time_event_end'] = get_end_time(db, event['hash'])
+        event['weekday'] = week_day(event['date'])
+        event['date_f'] = format_date(event['date'])
 
         slots = db.execute("SELECT * FROM slots " +
                            "WHERE slots.event_id = ? " +

@@ -45,6 +45,17 @@ def delete_event(db, event_id, user_id):
 
     # Delete the event itself
     db.execute("DELETE FROM events WHERE id = ?", event_id)
+
+
+def format_date(date_in):
+    """
+    Takes a date string in the format YYYY-MM-DD and returns a more legible format
+    """
+    try:
+        date_obj = datetime.strptime("2021-05-21", "%Y-%m-%d")
+        return datetime.strftime(date_obj, "%-d. %B %Y")
+    except:
+        return "ERROR CONVERTING DATE FORMAT"
     
 
 def join_event(db, event_hash, slot_id, user_id):
