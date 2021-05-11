@@ -28,7 +28,7 @@
 
                 <div class="two-buttons d1">
                     <form>
-                        <button type="button" class="button-quiet1 button-width1" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
+                        <button type="button" class="button-delete1 button-width1" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
                             Delete
                         </button>
                     </form>
@@ -52,7 +52,7 @@
                             <div class="modal-footer two-buttons" style="margin-left: auto; border-top: none;" b>
                                 <button type="button" class="button-loud1" data-dismiss="modal">Cancel</button>
                                 <form action="/delete_from_created/{{ event.id }}" method="post" style="padding-left: 8px;">
-                                    <button type="submit" class="button-quiet1">Delete</button>
+                                    <button type="submit" class="button-delete1">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                 <p class="event-card-slots">{{ event.slots_full }} / {{ event.slots_total }} slots filled</p>
                 <div class="two-buttons d1">
                     <form>
-                        <button type="button" class="button-quiet1 button-width1" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
+                        <button type="button" class="button-delete1 button-width1" data-toggle="modal" data-target="#confirm_delete_{{ event.id }}">
                             Delete
                         </button>
                     </form>
@@ -102,7 +102,7 @@
                             <div class="modal-footer two-buttons" style="margin-left: auto; border-top: none;" b>
                                 <button type="button" class="button-loud1" data-dismiss="modal">Cancel</button>
                                 <form action="/delete_from_created/{{ event.id }}" method="post" style="padding-left: 8px;">
-                                    <button type="submit" class="button-quiet1">Delete</button>
+                                    <button type="submit" class="button-delete1">Delete</button>
                                 </form>
                             </div>
                         </div>
