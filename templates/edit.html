@@ -13,6 +13,10 @@
 <h1 class="category-header">Edit Event</h1>
 <div class="event-main">
     <div id="JSnameDiv">
+        <div class="card-top-leftright">
+            <div class="event-card-hash">{{ event.hash }}</div>
+            <div class="event-index-attending">Hosting</div>
+        </div> 
         <h3>Event</h3>
         <!-- {{ event }} -->
             <form class="edit-event-grid" action="/edit/{{ event.hash }}" method="post">
