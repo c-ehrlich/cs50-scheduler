@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block head %}
-    <link href="/static/create.css" rel="stylesheet">   
+    <link href="/static/create.css" rel="stylesheet">  
+    <link href="/static/cards.css" rel="stylesheet">    
 {% endblock %}
 
 {% block main %}
     <h1 class="category-header">New Event</h1>
-    <form action="/create" class="center" method="post">
+    <form action="/create" class="center event-main center-self" method="post">
+        <p>Insert event information</p>
         <div class="create-event-grid">
             <div class="form-group a1">
                 <input autocomplete="off" autofocus class="input-loud1 w400" name="name" maxlength="50" placeholder="Event Name" required type="text">
