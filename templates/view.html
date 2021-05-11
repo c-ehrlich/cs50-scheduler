@@ -10,7 +10,7 @@
 
 {% block main %}
 <h1 class="category-header">View Event</h1>
-<div class="event-main">
+<div class="event-main center-self">
     <div class="card-top">
         <p class="event-card-hash">{{ event.hash }}</p> 
         <h2 class="event-card-title">{{ event.eventname }}</h2>
@@ -61,44 +61,48 @@
         </div>
     </div>  
     {% endif %}
-    <h2 class="event-card-title m16top">Slots</h2>
+    <h2 class="event-card-title m32top">Slots</h2>
     {% for slot in slots %}
-        {{ slot.id }} <!-- id is just for debugging, delete later -->
-        {{ loop.index }} <!-- This counts slots from 1 to n. maybe not necessary? -->
-        {{ slot.time_start }} - {{ slot.time_end}}
+    <div class="view-slot-grid">
+        <div class="view-slot-time-start">{{ slot.time_start }}</div>
+        <div class="view-slot-dash">-</div>
+        <div class="view-slot-time-end">{{ slot.time_end}}</div>
         
         <!-- USER IS THE ADMIN OF THE EVENT -->
         {% if event.owner_id == user %}
             {% if slot.user_id != 0 %}
-                {{ slot.username }}
+                <div class="view-slot-username">{{ slot.username }}</div>
                 <form action="/remove/{{ event.hash }}/{{ slot.user_id }}" method="post">
-                    <input type="submit" value="Cancel this slot">
+                    <input type="submit" class="button-delete1 button-width1 no-margin" value="Cancel this slot">
                 </form>
+            {% else %}
+                <div class="view-slot-username">-</div>
             {% endif %}
         
         <!-- USER IS NOT THE ADMIN OF THE EVENT -->
         {% else %}
             {% if slot.user_id == 0 %}
-                - {{ event.hash }} - {{ slot.id }}
+                <div class="view-slot-username">-</div>
                 <form action="/join/{{ event.hash }}/{{ slot.id }}" method="post">
-                    <input type="submit" value="Pick this slot">
+                    <input type="submit" class="button-loud1 button-width1 no-margin" value="Pick this slot">
                 </form>
             {% elif slot.user_id == user %}
-                {{ slot.username }}
+                <div class="view-slot-username">U GOT THIS ONE</div>
                 <!-- give the slot a differenent div class that overrides its bg-color! -->
                 <form action="/leave/{{ event.hash }}" method="post">
-                    <input type="submit" value="Cancel this slot">
+                    <input type="submit" class="button-delete1 button-width1 no-margin" value="Cancel this slot">
                 </form>
             {% else %}
-                {{ slot.username }}
+                <div class="view-slot-username">{{ slot.username }}</div>
 
             {% endif %}
         
         {% endif %}
-        <hr>
+    </div>
+    <hr>
     {% endfor %}
     <form action="/home" method="get">
-        <input type="submit" value="Done">
+        <input type="submit" class="button-loud1 button-width1 center-self" value="Done">
     </form>
 </div>
 {% endblock %}

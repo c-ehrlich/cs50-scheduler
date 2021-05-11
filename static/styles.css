@@ -235,6 +235,18 @@ h3 {
 .add-slot-end-time { grid-column: 4 / 5; }
 .add-slot-button { grid-column: 5 / 6; }
 
+.view-slot-grid {
+    display: grid;
+    grid-template-columns: 48px 24px 48px 16px 270px 160px;
+    grid-template-rows: 40px; 
+    align-items: center; }
+.view-slot-time-start { grid-column: 1; }
+.view-slot-dash { grid-column: 2; }
+.view-slot-time-end { grid-column: 3; }
+/* column 4 is empty */
+.view-slot-username { grid-column: 5; }
+.view-slot-btn { grid-column: 6; }
+
 /*
  *
  *
@@ -282,6 +294,7 @@ table
 /* HELPER STYLES */
 .w300 { min-width: 300px; }
 .m16top { margin-top: 16px; }
+.m32top { margin-top: 32px; }
 .m32b { margin-bottom: 32px; }
 .no-margin { margin: 0; }
 .center-self { margin-left: auto; margin-right: auto; }
