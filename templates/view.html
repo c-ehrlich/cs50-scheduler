@@ -72,9 +72,33 @@
         {% if event.owner_id == user %}
             {% if slot.user_id != 0 %}
                 <div class="view-slot-username">{{ slot.username }}</div>
-                <form action="/remove/{{ event.hash }}/{{ slot.user_id }}" method="post">
+                <!-- <form action="/remove/{{ event.hash }}/{{ slot.user_id }}" method="post">
                     <input type="submit" class="button-delete1 button-width1 no-margin" value="Cancel this slot">
-                </form>
+                </form> -->
+                <button type="button" class="button-delete1 button-width1 no-margin" data-toggle="modal" data-target="#remove_{{ event_hash }}_{{ slot.user_id }}">
+                    Remove
+                </button>
+                <div class="modal fade"  id="remove_{{ event_hash }}_{{ slot.user_id }}"tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Remove Attendee</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="border-bottom: 1px solid #dee2e6;">
+                                Are you sure you want to remove {{ slot.username }} from this slot?
+                            </div>
+                            <div class="modal-footer two-buttons" style="margin-left: auto; border-top: none;" b>
+                                <button type="button" class="button-loud1" data-dismiss="modal">Cancel</button>
+                                <form action="/remove/{{ event.hash }}/{{ slot.user_id }}" method="post" style="padding-left: 8px;">
+                                    <button type="submit" class="button-delete1">Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% else %}
                 <div class="view-slot-username">-</div>
             {% endif %}
