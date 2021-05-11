@@ -76,6 +76,7 @@ def index():
             else:
                 event['type'] = "Attending"
             event['weekday'] = week_day(event['date'])
+            event['date_f'] = format_date(event['date'])
 
     return render_template("index.html", events=events)
 
@@ -296,6 +297,7 @@ def created():
             event['time_event_start'] = get_start_time(db, event['hash'])
             event['time_event_end'] = get_end_time(db, event['hash'])
             event['weekday'] = week_day(event['date'])
+            event['date_f'] = format_date(event['date'])
 
         # Show the selected events
         return render_template("created.html", events=events, pastmeet=pastmeet)
@@ -479,6 +481,7 @@ def joined():
             event['time_event_start'] = get_start_time(db, event['hash'])
             event['time_event_end'] = get_end_time(db, event['hash'])
             event['weekday'] = week_day(event['date'])
+            event['date_f'] = format_date(event['date'])
             event['owner'] = db.execute("SELECT username FROM users " +
                                         "JOIN events ON events.owner_id = users.id " +
                                         "WHERE events.hash = ?", 

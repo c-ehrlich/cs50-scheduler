@@ -296,6 +296,7 @@ table
 .m16top { margin-top: 16px; }
 .m32top { margin-top: 32px; }
 .m32b { margin-bottom: 32px; }
+.m0b { margin-bottom: 0px; }
 .no-margin { margin: 0; }
 .center-self { margin-left: auto; margin-right: auto; }
 hr { width: 100%; }

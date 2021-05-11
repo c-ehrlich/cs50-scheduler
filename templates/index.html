@@ -20,7 +20,8 @@
                 </div>
                 <h2 class="event-card-title">{{ event.eventname }}</h2>
             </div>
-            <p class="event-card-datetime m16top" style="margin-bottom: 8px;">{{ event.weekday }} {{ event.date }}, 
+            <p class="event-card-datetime m16top" style="margin-bottom: 8px;">{{ event.weekday }}, {{ event.date_f }}</p>
+            <p>
                 {% if event.type == "Attending" %}
                     {{ event.time_start }} - {{ event.time_end }}
                 {% else %}
