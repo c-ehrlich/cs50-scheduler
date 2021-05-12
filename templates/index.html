@@ -11,6 +11,9 @@
 {% block main %}
 <div class="center">
     <h1 class="category-header">This Week</h1>
+    {% if not events|length %}
+        <p>No events this week!</p>
+    {% endif %}
     {% for event in events %}
         <div class="event-main">
             <div class="card-top">
