@@ -14,7 +14,7 @@
 * requests
 
 ## Instructions (for demo usage)
-1. Duplicate scheduler.bak and rename the copy to scheduler.db
+1. Duplicate scheduler.backup and rename the copy to scheduler.db
 2. In the root directory of the project, `flask run`
 
 ## Accounts and Events in sample DB
