@@ -34,16 +34,19 @@ I tried to keep the UI as simple as possible, thinking back to the early web app
 ### Accounts
 * There is currently email confirmation, so users can sign up with an email address that is not theirs. 
 
-### Database Tables
+## Database
 * The database is normalized to 3NF. 
-#### users
+### users
+```
 id INTEGER
 username TEXT NOT NULL
 hash TEXT NOT NULL
 email TEXT NOT NULL
 is_moderator INTEGER DEFAULT 0
 PRIMARY KEY (id)
-#### events
+```
+### events
+```
 id INTEGER
 eventname TEXT NOT NULL
 description TEXT NOT NULL DEFAULT ""
@@ -52,7 +55,9 @@ owner_id INTEGER
 hash TEXT NOT NULL
 PRIMARY KEY (id)
 FOREIGN KEY (owner_id) REFERENCES users (id)
+```
 #### slots
+```
 id INTEGER
 time_start TEXT
 time_end TEXT
@@ -61,6 +66,7 @@ user_id INTEGER
 PRIMARY KEY (id)
 FOREIGN KEY (event_id) REFERENCES events (id)
 FOREIGN KEY (user_id) REFERENCES users (id)
+```
 
 ## Files and notes
 ### app.py
