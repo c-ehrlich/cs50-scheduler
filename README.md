@@ -29,6 +29,13 @@ I tried to keep the UI as simple as possible, thinking back to the early web app
 * The user-facing site is almost entirely HTML and CSS, there is almost no JS. A stretch goal for a future version of this project is to build it entirely without JS.
 ### Database Tables
 * The database is normalized to 3NF. 
+
+## Limitations & Considerations
+### Deployment
+* The app currently only runs in test mode in Flask. Likewise the DB, while fully functional, is probably not ready for real-world deployment.
+### Accounts
+* There is currently email confirmation, so users can sign up with an email address that is not theirs. 
+
 #### users
 id INTEGER
 username TEXT NOT NULL
