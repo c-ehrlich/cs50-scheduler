@@ -24,7 +24,7 @@ There is only one type of user account. This means that any user can both host a
 I tried to keep the UI as simple as possible, thinking back to the early web apps as I find many current trends in web design to be actively user hostile. Here are a few examples of considerations I made during the design process:
 * High-contrast elements suggest the things the user will most commonly want to do
 * For actions that we really don't want users to accidentally do, such as deleting events, buttons turn red on hover, and lead to a modal where the confirm button once again turns red on hover.
-* Emphasis (for example the user's own name in a slot list) are achieved using simple <strong> tags
+* Emphasis (for example the user's own name in a slot list) are achieved using simple html `<strong>` tags
 * All front-end elements are designed so that user name fields support very long names - I checked all of them with the world's longest recorded human name.
 * The user-facing site is almost entirely HTML and CSS, there is almost no JS. A stretch goal for a future version of this project is to build it entirely without JS.
 ### Database Tables
