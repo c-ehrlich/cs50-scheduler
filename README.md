@@ -1,6 +1,12 @@
 # Scheduler
-#### Video Demo: https://www.youtube.com/watch?v=cQ6SVQJTlwI
+
 #### Description: Final project for Harvard University CS50. Web app that lets users create events and register for time slots.
+
+#### Video Demo: https://www.youtube.com/watch?v=cQ6SVQJTlwI
+
+![Scheduler Screenshot 1](https://i.imgur.com/Qxj2A83.jpg)
+
+![Scheduler Screenshots 2](https://i.imgur.com/4l9OAeN.jpg)
 
 ## Requirements
 * cs50
@@ -27,12 +33,30 @@ I tried to keep the UI as simple as possible, thinking back to the early web app
 * Emphasis (for example the user's own name in a slot list) are achieved using simple html `<strong>` tags
 * All front-end elements are designed so that user name fields support very long names - I checked all of them with the world's longest recorded human name.
 * The front-end is almost entirely built in HTML and CSS, with maybe 20 lines of JS. A stretch goal for a future version of this project is to build it entirely without JS.
+### Security & Data Integrity
+* The app adheres to Flask's Best Practices for avoiding SQL injection
+* Event hashes are guaranteed to be unique, and there are about 200 billion possible ones
+* Event hashes are non-sequential, ie not guessable
+* Backend security - the app is safe against injected JavaScript, bad requests, etc
+  * Users who are not the creator of an event cannot modify it
+  * Users cannot override other user's slots
+  * etc.
+* Event slots must end after they start and cannot overlap
+* No matter which order event slots are entered in, they appear correctly in all views
+* All data and time information is validated for formatting before being input into the database
+* And much more!
 
-## Limitations
+## Limitations & Wish List
 ### Deployment
 * The app currently only runs in test mode in Flask. Likewise the DB, while fully functional, is probably not ready for real-world deployment.
 ### Accounts
-* There is currently email confirmation, so users can sign up with an email address that is not theirs. 
+* A mail server (for account confirmation, notifications about event changes, etc)
+* Timezones (currently everything including the frontend runs in UTC)
+* Support for multiple people per slot, for group events
+* Safari on Mac prior to 14.1 (released April 2021) doesn't support "data" and "time" html input types properly, build a workaround for that
+* "Garbage Bin" - Events go somewhere before being fully deleted, to allow restoring accidentally deleted events
+* Transfer ownership of an event
+* Improved mobile/responsive layout
 
 ## Database
 * The database is normalized to 3NF. 
